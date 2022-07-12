@@ -1,0 +1,14 @@
+{
+  "name": "@b/context",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "echo \"Success\"!"
+  },
+  "dependencies": {
+    "@b/common": "1.0.0"
+  },
+  "devDpendencies": {
+    "@types/node": "17.0.42"
+  }
+}
