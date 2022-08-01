@@ -1,12 +1,12 @@
-import { ValueNode } from '../src/ValueNode';
+import { ObservableNode } from '../src/nodes/ObservableNode';
 
-describe('ValueNode', () => {
+describe('ObservableNode', () => {
   const exec = jest.fn();
   const target = { exec };
 
   it('setting value calls target', () => {
     const value = [ 1, 2 ];
-    const node = new ValueNode();
+    const node = new ObservableNode();
     node.target = target;
     node.value = value;
 
@@ -15,7 +15,7 @@ describe('ValueNode', () => {
 
   it('StateNode#exec sets value', () => {
     const value = [ 1, 2 ];
-    const node = new ValueNode();
+    const node = new ObservableNode();
     
     node.exec(value);
 

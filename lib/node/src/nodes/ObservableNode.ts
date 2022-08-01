@@ -1,9 +1,9 @@
-import { IExecutable, ITargetable } from './types';
+import { IChainable, ITargetable } from '../types';
 
-export class ValueNode<T = unknown> implements IExecutable<T>, ITargetable<T> {
+export class ObservableNode<T = unknown> implements IChainable<T>, ITargetable<T> {
   private _value: T;
 
-  public target: IExecutable<T> | null;
+  public target: IChainable<T> | null;
 
   public get value(): T {
     return this._value;

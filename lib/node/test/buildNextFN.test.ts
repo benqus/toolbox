@@ -1,4 +1,4 @@
-import { buildNextFnForTargetable } from '../src/buildNextFnForTargetable';
+import { buildNextFnForTargetable } from '../src/utils/buildNextFnForTargetable';
 
 describe('buildNextFnForTargetable', () => {
   const exec = jest.fn();

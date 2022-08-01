@@ -1,11 +1,11 @@
-import { IExecutable, ITargetable, MapFN } from './types';
+import { IChainable, ITargetable, MapFN } from '../types';
 
-export class MapNode<Input = unknown, Output = unknown> implements IExecutable<Input>, ITargetable<Output> {
+export class MapNode<Input = unknown, Output = unknown> implements IChainable<Input>, ITargetable<Output> {
   constructor(
     private readonly _mapFn: MapFN<Input, Output>
   ) {}
 
-  public target: IExecutable<Output> | null = null;
+  public target: IChainable<Output> | null = null;
 
   public exec(input: Input): void {
     try {

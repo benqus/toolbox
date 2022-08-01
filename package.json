@@ -19,6 +19,7 @@
   "bugs": {
     "url": "https://github.com/benqus/toolbox/issues"
   },
+  "contributors": [],
   "homepage": "https://github.com/benqus/toolbox#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.27.1",

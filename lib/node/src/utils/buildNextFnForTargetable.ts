@@ -1,10 +1,10 @@
-import { ITargetable, NextFN } from './types';
+import { ITargetable, NextFN } from '../types';
 
 export function buildNextFnForTargetable<T>(targetable: ITargetable<T>): NextFN<T> {
   let called = false;
   
   function nextFn(output: T): T | Promise<T> | null | void {
-    if (called) throw new Error('NextFN has already been called!')
+    if (called) throw new Error('NextFN has already been called!');
     nextFn.invalidate();
     targetable.target?.exec(output);
   }

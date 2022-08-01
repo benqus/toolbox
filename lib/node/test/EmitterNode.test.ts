@@ -1,14 +1,10 @@
-import { EmitterNode } from '../src/EmitterNode';
+import { EmitterNode } from '../src/nodes/EmitterNode';
 
 describe('EmitterNode', () => {
   const exec1 = jest.fn();
   const exec2 = jest.fn();
   const target1 = { exec: exec1 };
   const target2 = { exec: exec2 };
-
-  const error = console.error;
-  beforeAll(() => console.error = () => {});
-  afterAll(() => console.error = error);
 
   it('addTarget', () => {
     const node = new EmitterNode();

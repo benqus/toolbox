@@ -1,22 +1,22 @@
 import { isPromise } from '@b/common/src/isPromise';
 
-import { IExecutable, ITargetable, NextFN, NextProcessorFn } from './types';
-import { buildNextFnForTargetable } from './buildNextFnForTargetable';
+import { IChainable, ITargetable, NextFN, NextProcessorFn } from '../types';
+import { buildNextFnForTargetable } from '../utils/buildNextFnForTargetable';
 
-export { NextFN } from './types';
+export { NextFN } from '../types';
 
 export function defaultExecutor<T>(): T {
   throw new Error('Node: executor not implemented!');
 }
 
-export class ExecNode<Input = unknown, Output = unknown> implements IExecutable<Input>, ITargetable<Output> {
+export class ExecNode<Input = unknown, Output = unknown> implements IChainable<Input>, ITargetable<Output> {
   constructor(
     private readonly _executor: NextProcessorFn<Input, Output> = defaultExecutor
   ) {}
 
   private _callTargetExec = (output: Output): void => this.target?.exec(output as Output);
 
-  public target: IExecutable<Output> | null = null;
+  public target: IChainable<Output> | null = null;
 
   public exec(input: Input): void {
     const next: NextFN<Output> = buildNextFnForTargetable<Output>(this);

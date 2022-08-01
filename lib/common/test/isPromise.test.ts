@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { isPromise } from '../src/isPromise';
 
 describe('isPromise', () => {
-  const its: Array<[ string, any, boolean ]> = [
+  const its: Array<[ string, unknown, boolean ]> = [
     ['returns true for Promise instance', new Promise(() => {}), true],
     ['returns true for async function', (async function () {})(), true],
     ['returns true for thenable', { then() {} }, true],

@@ -1,4 +1,4 @@
-import { ExecNode, NextFN } from '../src/ExecNode';
+import { ExecNode, NextFN } from '../src/nodes/ExecNode';
 
 function createMockNextFn() {
   const mockNextFn = jest.fn() as (jest.Mock & {
@@ -12,21 +12,17 @@ function createMockNextFn() {
   return mockNextFn;
 }
 
-jest.mock('../src/buildNextFnForTargetable', () => ({
-    buildNextFnForTargetable: jest.fn(createMockNextFn)
+jest.mock('../src/utils/buildNextFnForTargetable', () => ({
+  buildNextFnForTargetable: jest.fn(createMockNextFn)
 }));
 
 describe('ExecNode', () => {
   const exec = jest.fn();
   const target = { exec };
 
-  const error = console.error;
-  beforeAll(() => console.error = () => {});
-  afterAll(() => console.error = error);
-
   it('calls executor with input and next function', () => {
-    let receivedNextFn: any = null;
-    let receivedInput: any = null;
+    let receivedNextFn: unknown = null;
+    let receivedInput: unknown = null;
     const input = [ 1, 2 ];
     const node = new ExecNode((i, n) => {
       receivedNextFn = n;
@@ -53,12 +49,12 @@ describe('ExecNode', () => {
   });
 
   it('invalidates next after calling the exec', () => {
-    const { buildNextFnForTargetable } = jest.requireMock('../src/buildNextFnForTargetable');
+    const { buildNextFnForTargetable } = jest.requireMock('../src/utils/buildNextFnForTargetable');
     const mockNextFn = createMockNextFn();
     
     buildNextFnForTargetable.mockReturnValue(mockNextFn);
 
-    let nextFn: NextFN<any> = createMockNextFn();
+    let nextFn: NextFN<unknown> = createMockNextFn();
     const input = [ 1, 2 ];
     const node = new ExecNode((_, n) => {
       nextFn = n;
@@ -83,7 +79,7 @@ describe('ExecNode', () => {
   });
 
   it('next target.exec when next is called', () => {
-    const { buildNextFnForTargetable } = jest.requireMock('../src/buildNextFnForTargetable')
+    const { buildNextFnForTargetable } = jest.requireMock('../src/utils/buildNextFnForTargetable');
 
     const input = [ 1, 2 ];
     const output = [ 3, 4 ];
@@ -102,7 +98,7 @@ describe('ExecNode', () => {
   });
 
   it('next target.exec when executor returns the output', () => {
-    const { buildNextFnForTargetable } = jest.requireMock('../src/buildNextFnForTargetable');
+    const { buildNextFnForTargetable } = jest.requireMock('../src/utils/buildNextFnForTargetable');
 
     const input = [ 1, 2 ];
     const output = [ 3, 4 ];
@@ -123,7 +119,7 @@ describe('ExecNode', () => {
   it('next target.exec when executor is async / returns a promise', () => {
     const input = [ 1, 2 ];
     const output = [ 3, 4 ];
-    const then = (fn: Function) => fn(output);
+    const then = (fn) => fn(output);
     const promise = { then };
     const executorSpy = jest.fn().mockReturnValue(promise);
 

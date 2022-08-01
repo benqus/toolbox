@@ -1,5 +1,5 @@
 export function initializeContext() {
-  const subscribers: Set<Function> = new Set();
+  const subscribers: Set<() => void> = new Set();
   let ut: NodeJS.Timeout | null = null;
 
   function triggerSubscribers() {
@@ -9,11 +9,11 @@ export function initializeContext() {
   }
 
   return class Context<T extends object = object> {
-    public static subscribe(fn: Function): void {
+    public static subscribe(fn: () => void): void {
       subscribers.add(fn);
     }
   
-    public static unsubscribe(fn: Function): void {
+    public static unsubscribe(fn: () => void): void {
       subscribers.delete(fn);
     }
   
@@ -25,5 +25,5 @@ export function initializeContext() {
       Object.assign(this._value, value);
       ut = ut ?? setTimeout(triggerSubscribers, 0);
     }
-  }
+  };
 }
