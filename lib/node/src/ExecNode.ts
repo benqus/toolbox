@@ -3,7 +3,7 @@ import { isPromise } from '@b/common/src/isPromise';
 import { IExecutable, ITargetable, NextFN, NextProcessorFn } from './types';
 import { buildNextFnForTargetable } from './buildNextFnForTargetable';
 
-export * from './types';
+export { NextFN } from './types';
 
 export function defaultExecutor<T>(): T {
   throw new Error('Node: executor not implemented!');

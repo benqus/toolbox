@@ -4,6 +4,9 @@ export interface NextFN<T> {
   invalidate(): void;
 }
 
+export type FilterFN<T> = (input: T) => boolean;
+export type DistinctFN<T, U> = (input: T) => U;
+export type MapFN<Input, Output> = (input: Input) => Output;
 export type NextProcessorFn<Input, Output> = (input: Input, next: NextFN<Output>) => Promise<Output> | Output | null | void | unknown;
 
 export interface IExecutable<Input> {

@@ -1,8 +1,6 @@
 import { IExecutable, ITargetable } from './types';
 
-export * from './types';
-
-export class StateNode<T = unknown> implements IExecutable<T>, ITargetable<T> {
+export class ValueNode<T = unknown> implements IExecutable<T>, ITargetable<T> {
   private _value: T;
 
   public target: IExecutable<T> | null;
