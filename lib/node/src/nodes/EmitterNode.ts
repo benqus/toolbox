@@ -1,6 +1,6 @@
 import { IChainable, IMultiTargetable } from '../types';
 
-export class EmitterNode<T = unknown> implements IChainable<T>, IMultiTargetable<T> {
+export class EmitterNode<T = unknown> implements IMultiTargetable<T> {
   public readonly targets: Set<IChainable<T>> = new Set();
   
   public addTarget(executable: IChainable<T>): void {

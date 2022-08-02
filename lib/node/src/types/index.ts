@@ -20,8 +20,14 @@ export interface ITargetable<Input> {
 
 export type IExecutable<T = unknown> = ITargetable<T> & IChainable<T>;
 
-export interface IMultiTargetable<Input> {
-  readonly targets: Set<IChainable<Input>>;
-  addTarget(executable: IChainable<Input>): void;
-  removeTarget(executable: IChainable<Input>): void;
+export interface IMultiTargetable<T> extends IChainable<T> {
+  readonly targets: Set<IChainable<T>>;
+  addTarget(executable: IChainable<T>): void;
+  removeTarget(executable: IChainable<T>): void;
+}
+
+export interface IRouteable<T> extends IChainable<T> {
+  readonly targets: Map<keyof T, [ T[keyof T], IChainable<T> ]>;
+  route(routeProp: keyof T, matchValue: T[keyof T], executable: IChainable<T>): void;
+  unroute(routeProp: keyof T): void;
 }
