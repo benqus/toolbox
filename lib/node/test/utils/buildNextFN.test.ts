@@ -1,10 +1,10 @@
-import { buildNextFnForTargetable } from '../src/utils/buildNextFnForTargetable';
+import { buildNextFnForTargetable } from '../../src/utils/buildNextFnForTargetable';
 
 describe('buildNextFnForTargetable', () => {
   const exec = jest.fn();
   const target = { exec };
 
-  it('returns a function with the correct default properties', () => {
+  test('returns a function with the correct default properties', () => {
     const nextFn = buildNextFnForTargetable({ target });
 
     expect(nextFn).toBeInstanceOf(Function);
@@ -12,7 +12,7 @@ describe('buildNextFnForTargetable', () => {
     expect(nextFn.hasBeenCalled()).toEqual(false);
   });
 
-  it('calling nextFn invalidate itself', () => {
+  test('calling nextFn invalidate itself', () => {
     const nextFn = buildNextFnForTargetable({ target });
     jest.spyOn(nextFn, 'invalidate');
 

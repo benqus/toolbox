@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Emitter } from '../src/Emitter';
 
 describe('Emitter', () => {
-  it('subscribe', () => {
+  test('subscribe', () => {
     const subscriberSpy = jest.fn();
     const emitter = new Emitter();
     
@@ -11,7 +12,7 @@ describe('Emitter', () => {
     expect(emitter._l.has(subscriberSpy)).toBe(true);
   });
 
-  it('unsubscribe', () => {
+  test('unsubscribe', () => {
     const subscriberSpy = jest.fn();
     const emitter = new Emitter();
     
@@ -22,7 +23,7 @@ describe('Emitter', () => {
     expect(emitter._l.has(subscriberSpy)).toBe(false);
   });
 
-  it('emit', () => {
+  test('emit', () => {
     const subscriberSpy1 = jest.fn();
     const subscriberSpy2 = jest.fn();
     const emitter = new Emitter<[ number, number ]>();
@@ -34,7 +35,7 @@ describe('Emitter', () => {
     expect(subscriberSpy2).toHaveBeenCalledWith(1, 2);
   });
 
-  it('clear', () => {
+  test('clear', () => {
     const subscriberSpy1 = jest.fn();
     const subscriberSpy2 = jest.fn();
     const emitter = new Emitter<[ number, number ]>();

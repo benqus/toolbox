@@ -1,4 +1,4 @@
-import { EmitterNode } from '../src/nodes/EmitterNode';
+import { EmitterNode } from '../../src/nodes/EmitterNode';
 
 describe('EmitterNode', () => {
   const exec1 = jest.fn();
@@ -6,14 +6,14 @@ describe('EmitterNode', () => {
   const target1 = { exec: exec1 };
   const target2 = { exec: exec2 };
 
-  it('addTarget', () => {
+  test('addTarget', () => {
     const node = new EmitterNode();
     node.addTarget(target1);
 
     expect(node.targets.has(target1)).toBe(true);
   });
 
-  it('addTarget', () => {
+  test('addTarget', () => {
     const node = new EmitterNode();
     node.addTarget(target1);
     node.removeTarget(target1);
@@ -21,7 +21,7 @@ describe('EmitterNode', () => {
     expect(node.targets.has(target1)).toBe(false);
   });
 
-  it('emits input', () => {
+  test('emits input', () => {
     const input = [ 1, 2 ];
     const node = new EmitterNode();
     node.addTarget(target1);

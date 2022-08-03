@@ -1,10 +1,10 @@
-import { ObservableNode } from '../src/nodes/ObservableNode';
+import { ObservableNode } from '../../src/nodes/ObservableNode';
 
 describe('ObservableNode', () => {
   const exec = jest.fn();
   const target = { exec };
 
-  it('setting value calls target', () => {
+  test('setting value calls target', () => {
     const value = [ 1, 2 ];
     const node = new ObservableNode();
     node.target = target;
@@ -13,7 +13,7 @@ describe('ObservableNode', () => {
     expect(exec).toHaveBeenCalledWith(value);
   });
 
-  it('StateNode#exec sets value', () => {
+  test('StateNode#exec sets value', () => {
     const value = [ 1, 2 ];
     const node = new ObservableNode();
     

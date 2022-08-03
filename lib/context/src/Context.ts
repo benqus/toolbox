@@ -21,8 +21,8 @@ export function initializeContext() {
 
     public get value(): T { return this._value; }
 
-    public set value(value: T | Partial<T>) {
-      Object.assign(this._value, value);
+    public set value(value: T) {
+      this._value = value;
       ut = ut ?? setTimeout(triggerSubscribers, 0);
     }
   };

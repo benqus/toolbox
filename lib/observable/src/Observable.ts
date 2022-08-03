@@ -1,12 +1,8 @@
-import { Listener } from '@b/common/types';
+import { Listener, ListenerSet } from '@b/common/types';
 
 export class Observable<T = unknown> {
-  private readonly _l: Set<Listener<[T]>> = new Set();
+  private readonly _l: ListenerSet<[T, Observable<T>]> = new Set();
   private _value: T;
-
-  protected $emitValue(): void {
-    this._l.forEach((fn: Listener<[T]>) => fn(this.value));
-  }
 
   public get value(): T {
     return this._value;
@@ -14,14 +10,14 @@ export class Observable<T = unknown> {
 
   public set value(value: T) {
     this._value = value;
-    this.$emitValue();
+    this._l.forEach((fn: Listener<[T, Observable<T>]>) => fn(this.value, this));
   }
 
-  public subscribe(...fns: Array<Listener<[T]>>): void {
+  public subscribe(...fns: Array<Listener<[T, Observable<T>]>>): void {
     fns.forEach(fn => this._l.add(fn));
   }
 
-  public unsubscribe(...fns: Array<Listener<[T]>>): void {
+  public unsubscribe(...fns: Array<Listener<[T, Observable<T>]>>): void {
     fns.forEach(fn => this._l.delete(fn));
   }
   

@@ -1,6 +1,6 @@
 import { IChainable, IRouteable } from '../types';
 
-export class EmitterNode<T = unknown> implements IRouteable<T> {
+export class RouterNode<T = unknown> implements IRouteable<T> {
   public readonly targets: Map<keyof T, [ T[keyof T], IChainable<T> ]> = new Map();
 
   public matcher(routingProp: keyof T, matchValue: T[keyof T], value?: T[keyof T]): boolean {

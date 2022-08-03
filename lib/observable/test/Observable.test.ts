@@ -2,50 +2,50 @@
 import { Observable } from '../src/Observable';
 
 describe('Observable', () => {
-  it('subscribe', () => {
+  test('subscribe', () => {
     const subscriberSpy = jest.fn();
-    const emitter = new Observable();
+    const observable = new Observable();
     
-    emitter.subscribe(subscriberSpy);
+    observable.subscribe(subscriberSpy);
 
     //@ts-ignore
-    expect(emitter._l.has(subscriberSpy)).toBe(true);
+    expect(observable._l.has(subscriberSpy)).toBe(true);
   });
 
-  it('unsubscribe', () => {
+  test('unsubscribe', () => {
     const subscriberSpy = jest.fn();
-    const emitter = new Observable();
+    const observable = new Observable();
     
-    emitter.subscribe(subscriberSpy);
-    emitter.unsubscribe(subscriberSpy);
+    observable.subscribe(subscriberSpy);
+    observable.unsubscribe(subscriberSpy);
 
     //@ts-ignore
-    expect(emitter._l.has(subscriberSpy)).toBe(false);
+    expect(observable._l.has(subscriberSpy)).toBe(false);
   });
 
-  it('emit', () => {
+  test('emit via value', () => {
     const subscriberSpy1 = jest.fn();
     const subscriberSpy2 = jest.fn();
-    const emitter = new Observable<[ number, number ]>();
+    const observable = new Observable<[ number, number ]>();
     
-    emitter.subscribe(subscriberSpy1, subscriberSpy2);
-    emitter.value = [1, 2];
+    observable.subscribe(subscriberSpy1, subscriberSpy2);
+    observable.value = [1, 2];
 
-    expect(subscriberSpy1).toHaveBeenCalledWith([ 1, 2 ]);
-    expect(subscriberSpy2).toHaveBeenCalledWith([ 1, 2 ]);
+    expect(subscriberSpy1).toHaveBeenCalledWith([ 1, 2 ], observable);
+    expect(subscriberSpy2).toHaveBeenCalledWith([ 1, 2 ], observable);
   });
 
-  it('clear', () => {
+  test('clear', () => {
     const subscriberSpy1 = jest.fn();
     const subscriberSpy2 = jest.fn();
-    const emitter = new Observable<[ number, number ]>();
+    const observable = new Observable<[ number, number ]>();
     
-    emitter.subscribe(subscriberSpy1, subscriberSpy2);
-    emitter.clear();
+    observable.subscribe(subscriberSpy1, subscriberSpy2);
+    observable.clear();
 
     //@ts-ignore
-    expect(emitter._l.has(subscriberSpy1)).toBe(false);
+    expect(observable._l.has(subscriberSpy1)).toBe(false);
     //@ts-ignore
-    expect(emitter._l.has(subscriberSpy2)).toBe(false);
+    expect(observable._l.has(subscriberSpy2)).toBe(false);
   });
 });
