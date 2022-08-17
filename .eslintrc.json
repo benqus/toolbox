@@ -4,6 +4,7 @@
     "es2021": true,
     "node": true
   },
+  "ignorePatterns":["build", "dist"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
@@ -17,6 +18,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-prototype-builtins": "off",
     "max-len": [
       "error",
       {

@@ -5,7 +5,9 @@
   "type": "module",
   "private": true,
   "workspaces": {
-    "packages": [ "lib/**" ]
+    "packages": [
+      "lib/**"
+    ]
   },
   "scripts": {
     "test": "yarn workspaces run test --passWithNoTests"
@@ -22,8 +24,10 @@
   "contributors": [],
   "homepage": "https://github.com/benqus/toolbox#readme",
   "devDependencies": {
+    "@parcel/transformer-typescript-types": "2.7.0",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
-    "eslint": "^8.17.0"
+    "eslint": "^8.17.0",
+    "typescript": ">=3.0.0"
   }
 }
