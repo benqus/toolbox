@@ -1,6 +1,5 @@
 import { topic } from './topic';
 import { Fn } from './types';
-import { createMockExecutionOptions } from './__mocks__/executionOptions';
 
 describe('topic', () => {
   test('fn', () => {
@@ -10,16 +9,6 @@ describe('topic', () => {
     expect(t.subscribe).toEqual(expect.any(Function));
     expect(t.unsubscribe).toEqual(expect.any(Function));
     expect(t.clear).toEqual(expect.any(Function));
-  });
-
-  test('through', () => {
-    const options = createMockExecutionOptions();
-    const o = topic();
-
-    o.through(options, 6);
-
-    expect(options.next).toHaveBeenCalledTimes(1);
-    expect(options.next).toHaveBeenCalledWith(6);
   });
 
   test('subscribe', () => {

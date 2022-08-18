@@ -1,5 +1,4 @@
 import { observable } from './observable';
-import { createMockExecutionOptions } from './__mocks__/executionOptions';
 
 describe('observable', () => {
   test('create', () => {
@@ -26,16 +25,6 @@ describe('observable', () => {
     o(6);
 
     expect(o.latest()).toEqual(6);
-  });
-
-  test('through', () => {
-    const options = createMockExecutionOptions();
-    const o = observable(5);
-
-    o.through(options, 6);
-
-    expect(options.next).toHaveBeenCalledTimes(1);
-    expect(options.next).toHaveBeenCalledWith(6);
   });
 
   test('subscribe', () => {
