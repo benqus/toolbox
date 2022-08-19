@@ -1,6 +1,8 @@
 {
   "name": "@b/pot",
+  "version": "0.1.0",
   "description": "Pipes, Observables & Topics",
+  "license": "BSD-3-Clause",
   "keywords": [
     "pipes",
     "pipelines",
@@ -9,8 +11,6 @@
     "reactive",
     "functional"
   ],
-  "version": "1.0.0",
-  "license": "UNLICENSED",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "files": [

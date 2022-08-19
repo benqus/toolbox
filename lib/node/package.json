@@ -1,13 +1,13 @@
 {
   "name": "@b/node",
-  "version": "1.0.0",
-  "license": "UNLICENSED",
+  "version": "0.1.0",
+  "license": "BSD-3-Clause",
   "scripts": {
     "jest": "jest",
     "test": "yarn jest"
   },
   "dependencies": {
-    "@b/common": "1.0.0"
+    "@b/common": "0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.3",

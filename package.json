@@ -1,7 +1,7 @@
 {
   "name": "toolbox",
-  "version": "1.0.0",
-  "description": "JavaScript (TypeScript) toolbox for asynchronous applications",
+  "version": "0.1.0",
+  "description": "TypeScript toolbox for modern, asynchronous applications",
   "type": "module",
   "private": true,
   "workspaces": {
@@ -17,7 +17,7 @@
     "url": "git+https://github.com/benqus/toolbox.git"
   },
   "author": "Bence Kormos <ben.kormos@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/benqus/toolbox/issues"
   },

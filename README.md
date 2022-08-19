@@ -1,2 +1,2 @@
 # toolbox
-JavaScript (TypeScript) toolbox for asynchronous applications
+TypeScript toolbox for modern, asynchronous applications

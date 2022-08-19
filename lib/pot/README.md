@@ -5,9 +5,9 @@
 
 ---
 
-Minimalistic tool to create execution pipelines, observables and topics in a reactive fashion for modern JavaScript & TypeScript applications.
+Minimalistic, dependency-free tool to create execution pipelines, observables and topics in a reactive fashion for modern JavaScript & TypeScript applications.
 
-The functional and function-based design allows for great flexibility in a context-less way without. Built in operators allow for easy to understand flow-control.
+The functional and function-based design allows for great flexibility and chaining, built in operators allow for easy-to-use flow-control.
 
 Simple piping logic provides an easy way for developers to extend their own pipelines with custom synchronous or asynchronous operators using the control object.
 
