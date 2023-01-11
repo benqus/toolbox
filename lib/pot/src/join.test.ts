@@ -37,8 +37,8 @@ describe('join', () => {
 
     const _join = join([p1, p2]);
 
-    expect(_join.topic).toEqual(expect.any(Function));
-    expect(_join.topic.subscribe).toEqual(expect.any(Function));
-    expect(_join.topic.unsubscribe).toEqual(expect.any(Function));
+    expect(_join).toEqual(expect.any(Function));
+    expect(_join.subscribe).toEqual(expect.any(Function));
+    expect(_join.unsubscribe).toEqual(expect.any(Function));
   });
 });

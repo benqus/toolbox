@@ -1,7 +1,7 @@
-import { Args, Fn, IExecutableFn } from '../types';
+import { AnyArgs, Fn, IExecutableFn } from '../types';
 
-export function filter(fn: Fn<Args, unknown>): IExecutableFn {
-  function _filter({ next }, ...args: Args) {
+export function filter(fn: Fn<AnyArgs, unknown>): IExecutableFn {
+  function _filter({ next }, ...args: AnyArgs) {
     const result = fn(...args);
     if (typeof result === 'undefined' || result === true) next(...args);
   }

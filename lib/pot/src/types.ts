@@ -1,16 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Args = Array<any>;
+export type AnyArgs = Array<any>;
 export type Maybe<T = unknown> = T | null;
 export type Promisable<T = void> = Promise<T> | T;
-export type Fn<A extends Args = Args, O = void> = (...args: A) => O;
+export type Fn<A extends AnyArgs = AnyArgs, O = void> = (...args: A) => O;
+export type UnsubscribeFn = () => void;
 
 export interface IExecutionOptions {
-  next(...args: Args): void;
+  next(...args: AnyArgs): void;
   end(): void;
 }
 
 export interface IExecutableFn {
-  (next: IExecutionOptions, ...args: Args): Promisable<void>;
+  (next: IExecutionOptions, ...args: AnyArgs): Promisable<void>;
 }
 
 export interface ILatest {
@@ -18,21 +19,19 @@ export interface ILatest {
 }
 
 export interface ITopic<T = void> {
-  subscribe(fn: Fn): T;
+  subscribe(fn: Fn): UnsubscribeFn;
   unsubscribe(fn: Fn): T;
   clear(): T;
 }
 
-export interface ITopicFn extends ITopic<ITopicFn> {
+export interface ITopicFn<Args extends AnyArgs = AnyArgs> extends ITopic<ITopicFn<Args>> {
   (...args: Args): void;
 }
 
-export interface IPipeFn extends ILatest {
-  (...args: Args): void;
-  topic: ITopicFn;
+export interface IPipeFn extends ILatest, ITopic<ITopicFn<AnyArgs>> {
+  (...args: AnyArgs): void;
 }
 
-export interface IObservableFn<T> extends ILatest {
+export interface IObservableFn<T> extends ILatest, ITopic<ITopicFn<[T, T]>> {
   (newValue: T): void;
-  topic: ITopicFn;
 }

@@ -13,7 +13,7 @@ export function join(
     _pipe(args);
   }
 
-  pipesOrObservables.forEach((_p) => _p.topic.subscribe(_subscriber));
+  pipesOrObservables.forEach((_p) => _p.subscribe(_subscriber));
 
   return _pipe;
 }

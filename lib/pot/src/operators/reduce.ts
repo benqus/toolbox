@@ -1,7 +1,7 @@
-import { Args, Fn, IExecutableFn, IExecutionOptions } from '../types';
+import { AnyArgs, Fn, IExecutableFn, IExecutionOptions } from '../types';
 
 export function reduce(fn: Fn): IExecutableFn {
-  function _reduce({ next }: IExecutionOptions, ...args: Args): void {
+  function _reduce({ next }: IExecutionOptions, ...args: AnyArgs): void {
     const result = fn(...args);
     next(result);
   }

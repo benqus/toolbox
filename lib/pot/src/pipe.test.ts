@@ -6,7 +6,9 @@ describe('pipe', () => {
 
     expect(p_).toEqual(expect.any(Function));
     expect(p_.latest).toEqual(expect.any(Function));
-    expect(p_.topic).toEqual(expect.any(Function));
+    expect(p_.subscribe).toEqual(expect.any(Function));
+    expect(p_.unsubscribe).toEqual(expect.any(Function));
+    expect(p_.clear).toEqual(expect.any(Function));
   });
 
   test('passes a new INextOptions object and the args for the fns', () => {
@@ -64,7 +66,7 @@ describe('pipe', () => {
     );
 
     const subscriber = jest.fn();
-    p.topic.subscribe(subscriber);
+    p.subscribe(subscriber);
     
     p(1, 2, 3);
 
@@ -87,8 +89,7 @@ describe('pipe', () => {
     const sub = jest.fn();
     const fn = ({ next }) => next(4, 5, 6);
     const p_ = pipe(fn);
-    p_.topic
-      .subscribe(sub);
+    p_.subscribe(sub);
     
     p_(1, 2, 3);
 

@@ -11,7 +11,7 @@ describe('timer', () => {
       [ o1, o2, o3 ],
     );
 
-    join_.topic.subscribe(sub);
+    join_.subscribe(sub);
 
     o3(4);
 

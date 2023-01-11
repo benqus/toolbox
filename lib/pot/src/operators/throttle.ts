@@ -1,7 +1,7 @@
-import { Args, IExecutableFn, IExecutionOptions } from '../types';
+import { AnyArgs, IExecutableFn, IExecutionOptions } from '../types';
 
 export function throttle(ms: number): IExecutableFn {
-  let lastArgs: Args;
+  let lastArgs: AnyArgs;
   let lastOptions: IExecutionOptions;
   let timeout: NodeJS.Timeout | void;
 
@@ -10,7 +10,7 @@ export function throttle(ms: number): IExecutableFn {
     lastOptions.next(...lastArgs);
   }
 
-  function _throttle(options: IExecutionOptions, ...args: Args): void {
+  function _throttle(options: IExecutionOptions, ...args: AnyArgs): void {
     lastArgs = args;
     lastOptions = options;
     timeout = timeout ?? setTimeout(execute, ms);

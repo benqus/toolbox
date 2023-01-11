@@ -5,7 +5,9 @@ describe('observable', () => {
     const o = observable(5);
 
     expect(o).toEqual(expect.any(Function));
-    expect(o.topic).toEqual(expect.any(Function));
+    expect(o.subscribe).toEqual(expect.any(Function));
+    expect(o.unsubscribe).toEqual(expect.any(Function));
+    expect(o.clear).toEqual(expect.any(Function));
     expect(o.latest).toEqual(expect.any(Function));
   });
 
@@ -31,7 +33,7 @@ describe('observable', () => {
     const o = observable(5);
     const subscriber = jest.fn();
 
-    o.topic.subscribe(subscriber);
+    o.subscribe(subscriber);
     o(6);
     o(6);
 
@@ -44,9 +46,9 @@ describe('observable', () => {
     const o = observable(5);
     const subscriber = jest.fn();
 
-    o.topic.subscribe(subscriber);
+    o.subscribe(subscriber);
     o(6);
-    o.topic.unsubscribe(subscriber);
+    o.unsubscribe(subscriber);
     o(7);
 
     expect(subscriber).toHaveBeenCalledTimes(1);

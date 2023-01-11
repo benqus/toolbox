@@ -1,7 +1,7 @@
-import { Args, IExecutableFn, IExecutionOptions } from '../types';
+import { AnyArgs, IExecutableFn, IExecutionOptions } from '../types';
 
 export function debounce(ms: number): IExecutableFn {
-  let lastArgs: Args;
+  let lastArgs: AnyArgs;
   let lastOptions: IExecutionOptions;
   let timeout: NodeJS.Timeout;
 
@@ -9,7 +9,7 @@ export function debounce(ms: number): IExecutableFn {
     lastOptions.next(...lastArgs);
   }
 
-  function _debounce(options: IExecutionOptions, ...args: Args): void {
+  function _debounce(options: IExecutionOptions, ...args: AnyArgs): void {
     lastArgs = args;
     lastOptions = options;
     if (timeout) clearTimeout(timeout);

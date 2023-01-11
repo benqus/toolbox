@@ -19,10 +19,22 @@ describe('topic', () => {
     const r = t.subscribe(listener);
 
     expect(subs.has(listener)).toBe(true);
-    expect(r).toEqual(t);
+    expect(typeof r).toEqual('function');
+    expect(r).not.toEqual(t);
   });
 
-  test('unsubscribe', () => {
+  test('unsubscribe fn', () => {
+    const subs: Set<Fn> = new Set();
+    const t = topic(subs);
+
+    const listener = () => null;
+    const u = t.subscribe(listener);
+    u();
+
+    expect(subs.has(listener)).toBe(false);
+  });
+
+  test('unsubscribe call', () => {
     const subs: Set<Fn> = new Set();
     const t = topic(subs);
 
