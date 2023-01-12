@@ -7,9 +7,8 @@ describe('state', () => {
     expect(typeof s.get).toEqual('function');
     expect(typeof s.set).toEqual('function');
     expect(typeof s.value).toEqual('function');
-    expect(typeof s.subscribe).toEqual('function');
-    expect(typeof s.unsubscribe).toEqual('function');
-    expect(typeof s.clear).toEqual('function');
+    expect(typeof s.listen).toEqual('function');
+    expect(typeof s.kill).toEqual('function');
   });
 
   test('empty state returns new empty object', () => {
@@ -46,11 +45,11 @@ describe('state', () => {
     expect(s()).toEqual({ a });
   });
 
-  test('subscribe', () => {
+  test('listen', () => {
     const s = state<{ a: object, b: object }>();
 
     const mockFn = jest.fn();
-    s.subscribe(mockFn);
+    s.listen(mockFn);
 
     s.set('a', { a: 100 });
     s.set('b', { b: 200 });
@@ -61,25 +60,26 @@ describe('state', () => {
     expect(mockFn.mock.calls[1][0].b).toEqual(s.value('b'));
   });
 
-  test('unsubscribe', () => {
+  test('unlisten', () => {
     const s = state<{ a: object, b: object }>();
 
     const mockFn = jest.fn();
-    s.subscribe(mockFn);
+    const u = s.listen(mockFn);
 
     s.set('a', { a: 100 });
-    s.unsubscribe(mockFn);
+    u(); // unlisten
+
     s.set('b', { b: 200 });
 
     expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][0].a).toEqual(s.value('a'));
   });
 
-  test('clear', () => {
+  test('kill', () => {
     const a = { a: 'bla' };
     const s = state({ a });
 
-    s.clear();
+    s.kill();
 
     expect(s()).toEqual({});
   });

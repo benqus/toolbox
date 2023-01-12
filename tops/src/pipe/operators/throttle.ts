@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common';
-import { IExecutableFn, IPipeController } from '../types';
+import { IOperatorFn, IPipeController } from '../types';
 
-export function throttle(ms: number): IExecutableFn {
+export function throttle(ms: number): IOperatorFn {
   let lastArgs: AnyArgs;
   let lastOptions: IPipeController;
   let timeout: NodeJS.Timeout | void;

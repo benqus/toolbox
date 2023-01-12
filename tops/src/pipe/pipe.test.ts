@@ -6,9 +6,8 @@ describe('pipe', () => {
 
     expect(p_).toEqual(expect.any(Function));
     expect(p_.latest).toEqual(expect.any(Function));
-    expect(p_.subscribe).toEqual(expect.any(Function));
-    expect(p_.unsubscribe).toEqual(expect.any(Function));
-    expect(p_.clear).toEqual(expect.any(Function));
+    expect(p_.listen).toEqual(expect.any(Function));
+    expect(p_.kill).toEqual(expect.any(Function));
   });
 
   test('passes a new INextOptions object and the args for the fns', () => {
@@ -65,16 +64,16 @@ describe('pipe', () => {
       exec2
     );
 
-    const subscriber = jest.fn();
-    p.subscribe(subscriber);
+    const listener = jest.fn();
+    p.listen(listener);
     
     p(1, 2, 3);
 
     expect(exec1).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
     expect(exec2).not.toHaveBeenCalled();
-    expect(subscriber).toHaveBeenCalledTimes(1);
-    expect(subscriber).toHaveBeenCalledWith(1, 2, 3);
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(1, 2, 3);
   });
 
   test('latest', () => {
@@ -86,15 +85,15 @@ describe('pipe', () => {
   });
   
   test('pipe topic is invoked after fns', () => {
-    const sub = jest.fn();
+    const listener = jest.fn();
     const fn = ({ next }) => next(4, 5, 6);
     const p_ = pipe(fn);
-    p_.subscribe(sub);
+    p_.listen(listener);
     
     p_(1, 2, 3);
 
-    expect(sub).toHaveBeenCalledTimes(1);
-    expect(sub).toHaveBeenCalledWith(4, 5, 6);
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(4, 5, 6);
   });
   
 });

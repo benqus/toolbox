@@ -1,30 +1,18 @@
-import { AnyArgs, Fn } from '../common';
-import { ITopicFn, UnsubscribeFn } from './types';
+import { AnyArgs, Fn, FnTopicUnsubscribe } from '../common';
+import { ITopicFn } from './types';
 
-export function topic<Args extends AnyArgs = AnyArgs>(subs: Set<Fn> = new Set()): ITopicFn<Args> {
-  function _topic(...args: Args): ITopicFn {
+export function topic<Args extends AnyArgs = AnyArgs>(subs: Set<Fn<Args>> = new Set()): ITopicFn<Args> {
+  function _topic(...args: Args): void {
     subs.forEach((fn: Fn<Args>) => fn(...args));
-    return _topic;
   }
 
-  function subscribe(fn: Fn<Args>): UnsubscribeFn {
+  function listen(fn: Fn<Args>): FnTopicUnsubscribe {
     subs.add(fn);
-    return () => unsubscribe(fn);
+    return (): boolean => subs.delete(fn);
   }
 
-  function unsubscribe(fn: Fn<Args>): ITopicFn {
-    subs.delete(fn);
-    return _topic;
-  }
-
-  function clear(): ITopicFn {
-    subs.clear();
-    return _topic;
-  }
-
-  _topic.subscribe = subscribe;
-  _topic.unsubscribe = unsubscribe;
-  _topic.clear = clear;
+  _topic.listen = listen;
+  _topic.kill = (): void => subs.clear();
 
   return _topic;
 }

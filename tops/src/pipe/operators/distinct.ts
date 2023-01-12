@@ -1,7 +1,7 @@
 import { AnyArgs, Fn } from '../../common';
-import { IExecutableFn, IPipeController } from '../types';
+import { IOperatorFn, IPipeController } from '../types';
 
-export function distinct(fn: Fn): IExecutableFn {
+export function distinct(fn: Fn): IOperatorFn {
   let lastValue: unknown;
   
   function _distinct({ next }: IPipeController, ...args: AnyArgs) {

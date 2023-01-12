@@ -5,9 +5,8 @@ describe('observable', () => {
     const o = observable(5);
 
     expect(o).toEqual(expect.any(Function));
-    expect(o.subscribe).toEqual(expect.any(Function));
-    expect(o.unsubscribe).toEqual(expect.any(Function));
-    expect(o.clear).toEqual(expect.any(Function));
+    expect(o.listen).toEqual(expect.any(Function));
+    expect(o.kill).toEqual(expect.any(Function));
     expect(o.latest).toEqual(expect.any(Function));
   });
 
@@ -29,11 +28,11 @@ describe('observable', () => {
     expect(o.latest()).toEqual(6);
   });
 
-  test('subscribe', () => {
+  test('listen', () => {
     const o = observable(5);
     const subscriber = jest.fn();
 
-    o.subscribe(subscriber);
+    o.listen(subscriber);
     o(6);
     o(6);
 
@@ -42,18 +41,18 @@ describe('observable', () => {
     expect(subscriber).toHaveBeenLastCalledWith(6, 5);
   });
 
-  test('unsubscribe', () => {
+  test('kill', () => {
     const o = observable(5);
-    const subscriber = jest.fn();
+    const listener = jest.fn();
 
-    o.subscribe(subscriber);
+    o.listen(listener);
     o(6);
-    o.unsubscribe(subscriber);
+    o.kill();
     o(7);
 
-    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(1);
     // called with newValue & oldValue
-    expect(subscriber).toHaveBeenCalledWith(6, 5);
+    expect(listener).toHaveBeenCalledWith(6, 5);
   });
 
 });

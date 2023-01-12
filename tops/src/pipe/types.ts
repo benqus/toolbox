@@ -1,7 +1,6 @@
-import { AnyArgs, Promisable, ILatest } from '../common';
-import { ITopic, ITopicFn } from '../topic';
+import { AnyArgs, Promisable, ILatest, IEmitter } from '../common';
 
-export interface IExecutableFn {
+export interface IOperatorFn {
   (next: IPipeController, ...args: AnyArgs): Promisable<void>;
 }
 
@@ -10,6 +9,6 @@ export interface IPipeController {
   end(): void;
 }
 
-export interface IPipeFn extends ILatest, ITopic<ITopicFn<AnyArgs>> {
+export interface IPipeFn extends ILatest, IEmitter {
   (...args: AnyArgs): void;
 }

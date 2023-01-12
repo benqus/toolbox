@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common';
-import { IExecutableFn, IPipeController } from '../types';
+import { IOperatorFn, IPipeController } from '../types';
 
-export function skip(count: number): IExecutableFn {
+export function skip(count: number): IOperatorFn {
   let i = 0;
 
   function _skip(options: IPipeController, ...args: AnyArgs): void {

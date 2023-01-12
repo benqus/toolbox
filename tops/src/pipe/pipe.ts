@@ -1,12 +1,12 @@
 import { topic } from '../topic';
 import { AnyArgs } from '../common';
-import { IExecutableFn, IPipeFn, IPipeController} from './types';
+import { IOperatorFn, IPipeFn, IPipeController} from './types';
 
-export function pipe(...fns: Array<IExecutableFn>): IPipeFn {
+export function pipe(...fns: Array<IOperatorFn>): IPipeFn {
   let lastArgs: AnyArgs = [];
   const _topic = topic();
 
-  function createExecutionOptions(i: number): IPipeController {
+  function createPipeController(i: number): IPipeController {
     function next(...args: AnyArgs): void {
       lastArgs = (args.length === 0 ? lastArgs : args);
       _fn(i + 1);
@@ -22,7 +22,7 @@ export function pipe(...fns: Array<IExecutableFn>): IPipeFn {
   function _fn(i: number): void {
     const fn = fns[i];
     if (fn) {
-      const options = createExecutionOptions(i);
+      const options = createPipeController(i);
       fn(options, ...lastArgs);
     } else {
       _topic(...lastArgs);
@@ -36,9 +36,8 @@ export function pipe(...fns: Array<IExecutableFn>): IPipeFn {
   }
 
   _pipe.latest = (): AnyArgs => lastArgs;
-  _pipe.subscribe = _topic.subscribe;
-  _pipe.unsubscribe = _topic.unsubscribe;
-  _pipe.clear = _topic.clear;
+  _pipe.listen = _topic.listen;
+  _pipe.kill = _topic.kill;
 
   return _pipe;
 }

@@ -1,7 +1,15 @@
+import { Maybe, resolveDependencies } from '../common';
 import { topic } from '../topic';
-import { IObservableFn } from './types';
+import { IObservableFn, IObservableFnDependencies } from './types';
 
-export function observable<T>(value?: T): IObservableFn<T> {
+const defaultDependencies: IObservableFnDependencies = { topic };
+
+export function observable<T>(
+  value: Maybe<T> = null,
+  dependencies: Partial<IObservableFnDependencies> = {},
+): IObservableFn<T> {
+  const { topic } = resolveDependencies<IObservableFnDependencies>(dependencies, defaultDependencies);
+
   const _topic = topic<[T, T]>();
 
   function _observable(newValue: T): void {
@@ -12,9 +20,8 @@ export function observable<T>(value?: T): IObservableFn<T> {
   }
 
   _observable.latest = (): T => value;
-  _observable.subscribe = _topic.subscribe;
-  _observable.unsubscribe = _topic.unsubscribe;
-  _observable.clear = _topic.clear;
+  _observable.listen = _topic.listen;
+  _observable.kill = _topic.kill;
 
   return _observable;
 }

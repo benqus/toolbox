@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common';
-import { IExecutableFn, IPipeController } from '../types';
+import { IOperatorFn, IPipeController } from '../types';
 
-export function take(count: number): IExecutableFn {
+export function take(count: number): IOperatorFn {
   let i = 0;
 
   function _take(options: IPipeController, ...args: AnyArgs): void {

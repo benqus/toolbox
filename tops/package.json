@@ -10,6 +10,8 @@
     "observables",
     "state managements"
   ],
+  "type": "module",
+  "source": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "files": [
@@ -19,15 +21,19 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf dist && npm run test",
-    "test": "npm run typecheck && npm run jest",
-    "jest": "jest",
-    "typecheck": "tsc"
+    "build": "rm -rf dist && npm run test && npm run parcel",
+    "test": "npm run tsc && npm run jest",
+    "jest": "jest --runInBand",
+    "parcel": "parcel build ./src/index.ts",
+    "tsc": "tsc --noEmit"
   },
   "devDependencies": {
+    "@parcel/packager-ts": "^2.8.2",
+    "@parcel/transformer-typescript-types": "^2.8.2",
     "@types/jest": "^29.2.5",
     "jest": "^29.3.1",
     "ts-jest": "^29.0.4",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "parcel": "^2.8.2"
   }
 }

@@ -1,11 +1,18 @@
-import { topic, UnsubscribeFn } from '../topic';
-import { observable, IObservableFn } from '../observable';
-import { IStateFn } from './types';
+import { resolveDependencies } from '../common/resolveDependencies';
+import { topic } from '../topic';
+import { IObservableFn, observable } from '../observable';
+import { IStateFn, IStateFnDependencies } from './types';
 
-export function state<T extends object = object>(defaults: T = null): IStateFn<T> {
+const defaultDependencies: IStateFnDependencies = { topic, observable };
+
+export function state<T extends object = object>(
+  defaults: T = null,
+  dependencies: Partial<IStateFnDependencies> = {},
+): IStateFn<T> {
+  const { topic, observable } = resolveDependencies<IStateFnDependencies>(dependencies, defaultDependencies);
+
   const _topic = topic<[T]>();
   const _observables: Map<keyof T, IObservableFn<T[keyof T]>> = new Map();
-  const _unsubs: Set<UnsubscribeFn> = new Set();
 
   function _state(): T {
     const values = {} as T;
@@ -13,11 +20,6 @@ export function state<T extends object = object>(defaults: T = null): IStateFn<T
       values[k] = _value(k);
     }
     return values;
-  }
-
-  function _subscribeToObservable(key: keyof T): void {
-    const unsub = _get(key).subscribe(_serializeStateAndNotifyTopic);
-    _unsubs.add(unsub);
   }
 
   function _serializeStateAndNotifyTopic(): void {
@@ -30,8 +32,9 @@ export function state<T extends object = object>(defaults: T = null): IStateFn<T
       _observables.set(key, observable<T[keyof T]>());
     }
 
-    _subscribeToObservable(key);
-    _get(key)(value); // update observable
+    const o = _get(key);
+    o.listen(_serializeStateAndNotifyTopic);
+    o(value);
   }
 
   function _get(key: keyof T): IObservableFn<T[keyof T]> {
@@ -50,16 +53,12 @@ export function state<T extends object = object>(defaults: T = null): IStateFn<T
   _state.get = _get;
   _state.value = _value;
 
-  _state.subscribe = _topic.subscribe;
-  _state.unsubscribe = _topic.unsubscribe;
-  _state.clear = (): void => {
-    _topic.clear();
-    
-    _observables.forEach(o => o.clear());
+  _state.listen = _topic.listen;
+  _state.kill = (): void => {
+    _observables.forEach(o => o.kill());
     _observables.clear();
 
-    _unsubs.forEach(unsub => unsub());
-    _unsubs.clear();
+    _topic.kill();
   };
 
   return _state;
