@@ -1,2 +1,3 @@
-# toolbox
-TypeScript toolbox for modern, asynchronous applications
+# B's Toolbox
+
+Simple, modern TypeScript tools for modern JS/TS applications.

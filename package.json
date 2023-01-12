@@ -2,32 +2,22 @@
   "name": "toolbox",
   "version": "0.1.0",
   "description": "TypeScript toolbox for modern, asynchronous applications",
-  "type": "module",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "lib/**"
-    ]
-  },
+  "workspaces": [
+    "tops"
+  ],
   "scripts": {
-    "test": "yarn workspaces run test --passWithNoTests"
+    "test": "npm run test --workspaces"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benqus/toolbox.git"
   },
-  "author": "Bence Kormos <ben.kormos@gmail.com>",
+  "author": "Bence Kormos <kormos.bence@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/benqus/toolbox/issues"
   },
   "contributors": [],
-  "homepage": "https://github.com/benqus/toolbox#readme",
-  "devDependencies": {
-    "@parcel/transformer-typescript-types": "2.7.0",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
-    "eslint": "^8.17.0",
-    "typescript": ">=3.0.0"
-  }
+  "homepage": "https://github.com/benqus/toolbox#readme"
 }
