@@ -1,0 +1,13 @@
+{
+  "name": "tops-test",
+  "description": "test package for @b/tops",
+  "private": true,
+  "scripts": {
+    "start:ts": "ts-node index.ts",
+    "start:js": "ts-node index.js",
+    "start:mjs": "ts-node index.mjs"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

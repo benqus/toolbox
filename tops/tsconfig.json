@@ -2,12 +2,10 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES6",
-    "declaration": true,
-    "outDir": "dist"
+    "declaration": true
   },
   "include": [
     "./src/**/*.ts",
-  ],
-  "exclude": ["**/__mocks__", "**/*.test.ts"]
+    "./test/**/*.ts",
+  ]
 }

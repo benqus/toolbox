@@ -8,24 +8,27 @@
     "topics",
     "pipes",
     "observables",
-    "state managements"
+    "state management"
   ],
-  "type": "module",
   "source": "src/index.ts",
-  "main": "dist/index.js",
-  "types": "dist/types.d.ts",
+  "main": "build/tops.js",
+  "module": "build/tops.mjs",
+  "types": "build/types.d.ts",
   "files": [
-    "./dist",
+    "./build",
     "LICENSE",
     "package.json",
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf dist && npm run test && npm run parcel",
+    "debug": "npm run rm && npm run test && npm run parcel:debug",
+    "build": "npm run rm && npm run test && npm run parcel:build",
     "test": "npm run tsc && npm run jest",
     "jest": "jest --runInBand",
-    "parcel": "parcel build ./src/index.ts",
-    "tsc": "tsc --noEmit"
+    "parcel:debug": "parcel build ./src/index.ts --dist-dir debug",
+    "parcel:build": "parcel build ./src/index.ts --dist-dir build --no-source-maps --no-cache",
+    "tsc": "tsc --noEmit",
+    "rm": "rm -rf build/ debug/ coverage/"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.8.2",

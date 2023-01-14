@@ -4,7 +4,8 @@
   "description": "TypeScript toolbox for modern, asynchronous applications",
   "private": true,
   "workspaces": [
-    "tops"
+    "tops",
+    "tops-test"
   ],
   "scripts": {
     "test": "npm run test --workspaces",

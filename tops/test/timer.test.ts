@@ -42,7 +42,7 @@ describe('timer', () => {
         expect(target.mock.calls[0][0]).toHaveProperty('elapsedTime');
         expect(target.mock.calls[0][1]).toHaveProperty('elapsedTime');
         expect(target.mock.calls[0][2]).toHaveProperty('elapsedTime');
-        expect(target.mock.calls[0][3]).toHaveProperty('elapsedTime');  
+        expect(target.mock.calls[0][3]).toHaveProperty('elapsedTime');
       } catch (e) {}
       done();
     };
