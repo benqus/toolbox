@@ -2,6 +2,7 @@ import { resolveDependencies } from '../common/resolveDependencies';
 import { topic } from '../topic';
 import { IObservableFn, observable } from '../observable';
 import { IStateFn, IStateFnDependencies } from './types';
+import { Maybe } from '../common';
 
 const defaultDependencies: IStateFnDependencies = { topic, observable };
 
@@ -28,13 +29,15 @@ export function state<T extends object = object>(
   }
 
   function _set(key: keyof T, value: T[keyof T]): void {
-    if (!_observables.has(key)) {
-      _observables.set(key, observable<T[keyof T]>());
+    let _observable: Maybe<IObservableFn<T[keyof T]>> = _observables.get(key) ?? null;
+
+    if (_observable === null) {
+      _observable = observable<T[keyof T]>()
+      _observable.listen(_serializeStateAndNotifyTopic);
+      _observables.set(key, _observable);
     }
 
-    const o = _get(key);
-    o.listen(_serializeStateAndNotifyTopic);
-    o(value);
+    _observable(value);
   }
 
   function _get(key: keyof T): IObservableFn<T[keyof T]> {

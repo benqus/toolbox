@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start:ts": "ts-node index.ts",
-    "start:js": "ts-node index.js",
-    "start:mjs": "ts-node index.mjs"
+    "start:js": "node index.js",
+    "start:mjs": "node index.mjs",
+    "test": "npm run start:js && npm run start:mjs && npm run start:ts"
   },
   "dependencies": {
     "ts-node": "^10.9.1"

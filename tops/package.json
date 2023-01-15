@@ -1,7 +1,7 @@
 {
   "name": "@b/tops",
   "version": "0.1.0",
-  "description": "Topics, Observables, Pipes and States",
+  "description": "Topics, Observables, Pipes and States, simple af.",
   "license": "BSD-3-Clause",
   "keywords": [
     "reactive",
@@ -23,6 +23,7 @@
   "scripts": {
     "debug": "npm run rm && npm run test && npm run parcel:debug",
     "build": "npm run rm && npm run test && npm run parcel:build",
+    "prepare": "npm run build",
     "test": "npm run tsc && npm run jest",
     "jest": "jest --runInBand",
     "parcel:debug": "parcel build ./src/index.ts --dist-dir debug",
