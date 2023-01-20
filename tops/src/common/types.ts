@@ -4,11 +4,12 @@ export type Maybe<T> = T | null;
 export type Promisable<T = void> = Promise<T> | T;
 export type Fn<FnArgs extends AnyArgs = AnyArgs, O = void> = (...args: FnArgs) => O;
 
-export type FnTopicUnsubscribe = () => boolean;
+export interface IUnsubscribe {
+  (): boolean;
+}
 
 export interface IEmitter<Args extends AnyArgs = AnyArgs> {
-  listen(fn: Fn<Args>): FnTopicUnsubscribe;
-  kill(): void;
+  subscribe(fn: Fn<Args>): IUnsubscribe;
 }
 
 export interface ILatest<T = unknown> {

@@ -1,62 +1,78 @@
 import { topic } from './topic';
-import { Fn } from '../common';
+
+jest.useFakeTimers();
+jest.spyOn(global, 'setTimeout');
 
 describe('topic', () => {
   test('fn', () => {
     const t = topic();
 
     expect(t).toEqual(expect.any(Function));
-    expect(t.listen).toEqual(expect.any(Function));
-    expect(t.kill).toEqual(expect.any(Function));
+    expect(t.subscribe).toEqual(expect.any(Function));
   });
 
-  test('listen', () => {
-    const subs: Set<Fn> = new Set();
-    const t = topic(subs);
+  test('subscribe returns an unsubscribe function', () => {
+    const t = topic<[ string ]>();
 
-    const listener = jest.fn();
-    const leave = t.listen(listener);
+    const subscriber = jest.fn();
+    const unsubscribe = t.subscribe(subscriber);
 
-    expect(subs.has(listener)).toBe(true);
-    expect(typeof leave).toEqual('function');
+    expect(typeof unsubscribe).toEqual('function');
   });
 
-  test('leave', () => {
-    const subs: Set<Fn> = new Set();
-    const t = topic(subs);
+  test('publish to topic invokes custom executor with default behaviour', () => {
+    const executor = jest.fn();
+    const t = topic<[ string, number ]>(executor);
 
-    const listener = jest.fn();
-    const leave = t.listen(listener);
-    leave();
+    t('hakuna matata', 5)
 
-    expect(subs.has(listener)).toBe(false);
+    expect(executor).toHaveBeenCalledTimes(1);
+    expect(executor).toHaveBeenCalledWith([expect.any(Function)]);
   });
 
-  test('kill', () => {
-    const listener = jest.fn();
-    const subs: Set<Fn> = new Set([ listener ]);
-    const t = topic(subs);
+  test('publish to topic with default executor invokes all subscribers with all arguments', () => {
+    const t = topic<[ string, number ]>();
 
-    t.kill();
+    const subscriber1 = jest.fn();
+    const subscriber2 = jest.fn();
+    t.subscribe(subscriber1);
+    t.subscribe(subscriber2);
 
-    expect(subs.has(listener)).toBe(false);
+    t('hakuna matata', 5);
+
+    expect(subscriber1).toHaveBeenCalledTimes(1);
+    expect(subscriber1).toHaveBeenCalledWith(['hakuna matata', 5]);
+    expect(subscriber2).toHaveBeenCalledTimes(1);
+    expect(subscriber2).toHaveBeenCalledWith(['hakuna matata', 5]);
   });
 
-  test('invoke', () => {
-    const listener1 = jest.fn();
-    const listener2 = jest.fn();
-    const listener3 = jest.fn();
+  test('unsubscribe', () => {
+    const t = topic<[ string ]>();
 
-    const subs: Set<Fn> = new Set([listener1, listener2, listener3]);
-    const t = topic(subs);
+    const subscriber = jest.fn();
+    const unsubscribe = t.subscribe(subscriber);
+    unsubscribe();
 
-    t(1, 2, 3);
+    t('hakuna matata');
 
-    expect(listener1).toHaveBeenCalledTimes(1);
-    expect(listener1).toHaveBeenCalledWith(1, 2, 3);
-    expect(listener2).toHaveBeenCalledTimes(1);
-    expect(listener2).toHaveBeenCalledWith(1, 2, 3);
-    expect(listener3).toHaveBeenCalledTimes(1);
-    expect(listener3).toHaveBeenCalledWith(1, 2, 3);
+    expect(subscriber).not.toHaveBeenCalled();
+  });
+
+  test('throttle', () => {
+    const t = topic.throttle<[ string, number ]>();
+
+    const subscriber1 = jest.fn();
+    t.subscribe(subscriber1);
+
+    t('hakuna matata1', 5);
+    t('hakuna matata2', 6);
+    t('hakuna matata3', 7);
+    t('hakuna matata4', 8);
+    t('hakuna matata5', 9);
+
+    jest.advanceTimersToNextTimer();
+
+    expect(subscriber1).toHaveBeenCalledTimes(1);
+    expect(subscriber1).toHaveBeenCalledWith(['hakuna matata5', 9]);
   });
 });

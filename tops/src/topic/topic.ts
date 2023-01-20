@@ -1,18 +1,28 @@
-import { AnyArgs, Fn, FnTopicUnsubscribe } from '../common';
-import { ITopicFn } from './types';
+import { AnyArgs, Fn, IUnsubscribe } from '../common';
+import { ITopic } from './types';
 
-export function topic<Args extends AnyArgs = AnyArgs>(subs: Set<Fn<Args>> = new Set()): ITopicFn<Args> {
+export function topic<Args extends AnyArgs = AnyArgs>(executor: Fn<[Fn]> = (fn: Fn): void => fn()): ITopic<Args> {
+  const subscriptions: Set<Fn<Args>> = new Set();
+
   function _topic(...args: Args): void {
-    subs.forEach((fn: Fn<Args>) => fn(...args));
+    executor((): void => subscriptions.forEach((fn: Fn<Args>): void => fn(...args)));
   }
 
-  function listen(fn: Fn<Args>): FnTopicUnsubscribe {
-    subs.add(fn);
-    return (): boolean => subs.delete(fn);
+  function subscribe(fn: Fn<Args>): IUnsubscribe {
+    return (): boolean => this.subscriptions.delete(fn);
   }
 
-  _topic.listen = listen;
-  _topic.kill = (): void => subs.clear();
+  return Object.assign(_topic, { subscribe });
+}
 
-  return _topic;
+// Throttle topic with custom timeout
+topic.throttle = function throttle<Args extends AnyArgs = AnyArgs>(timeout = 0): ITopic<Args> {
+  let _t: NodeJS.Timeout | void = void 0;
+  
+  return topic<Args>((fn: Fn): void => {
+    _t = _t || setTimeout(() => {
+      if (_t) _t = clearTimeout(_t);
+      fn();
+    }, timeout);
+  });
 }
