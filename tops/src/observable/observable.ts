@@ -1,27 +1,20 @@
-import { Maybe, resolveDependencies } from '../common';
-import { topic } from '../topic';
-import { IObservableFn, IObservableFnDependencies } from './types';
+import { ITopic, topic } from '../topic';
+import { TObservable } from './types';
 
-const defaultDependencies: IObservableFnDependencies = { topic };
+export function observable<T extends object = object>(
+  props: T,
+  observableTopic: ITopic<[T]> = topic<[T]>()
+): TObservable<T> {
+  const { subscribe } = observableTopic;
+  const target = Object.create(Object.freeze({ subscribe }));
 
-export function observable<T>(
-  value: Maybe<T> = null,
-  dependencies: Partial<IObservableFnDependencies> = {},
-): IObservableFn<T> {
-  const { topic } = resolveDependencies<IObservableFnDependencies>(dependencies, defaultDependencies);
+  Object.seal(Object.assign(target, props));
 
-  const _topic = topic<[T, T]>();
-
-  function _observable(newValue: T): void {
-    if (newValue === value) return;
-    const oldValue = value;
-    value = newValue;
-    _topic(value, oldValue as T);
+  function set(target: T, prop: string, value: T[keyof T], receiver: any): boolean {
+    const result = Reflect.set(target, prop, value, receiver);
+    if (result) observableTopic(target);
+    return result;
   }
 
-  _observable.latest = (): T => value;
-  _observable.listen = _topic.listen;
-  _observable.kill = _topic.kill;
-
-  return _observable;
+  return new Proxy<TObservable<T>>(target, { set });
 }

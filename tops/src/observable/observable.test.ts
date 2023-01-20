@@ -1,58 +1,50 @@
+import { IEmitter } from '../common';
 import { observable } from './observable';
 
 describe('observable', () => {
-  test('create', () => {
-    const o = observable(5);
+  let mockTopic: jest.Mock & IEmitter;
 
-    expect(o).toEqual(expect.any(Function));
-    expect(o.listen).toEqual(expect.any(Function));
-    expect(o.kill).toEqual(expect.any(Function));
-    expect(o.latest).toEqual(expect.any(Function));
+  beforeEach(() => {
+    const subscribe = jest.fn();
+    mockTopic = Object.assign(jest.fn(), { subscribe });
   });
 
-  test('latest', () => {
-    const o = observable(5);
+  test('create sealed object with custom topic', () => {
+    const props = {
+      a: 5,
+      b: 'hakuna',
+    };
+    const obs = observable(props, mockTopic);
 
-    expect(o.latest()).toEqual(5);
-
-    o(6);
-
-    expect(o.latest()).toEqual(6);
+    expect(obs).toEqual(props);
+    expect(obs === props).toBe(false);
+    expect(obs.subscribe).toEqual(mockTopic.subscribe);
   });
 
-  test('update', () => {
-    const o = observable(5);
+  test('update observable calls custom topic', () => {
+    const props = {
+      a: 5,
+      b: 'hakuna',
+    };
+    const obs = observable(props, mockTopic);
 
-    o(6);
+    obs.b = 'matata';
 
-    expect(o.latest()).toEqual(6);
+    expect(obs.b).toEqual('matata');
+    expect(mockTopic).toHaveBeenCalledTimes(1);
+    expect(mockTopic).toHaveBeenCalledWith(obs);
   });
 
-  test('listen', () => {
-    const o = observable(5);
-    const subscriber = jest.fn();
+  test('observable is sealed, new property assignment throws error', () => {
+    const props = {
+      a: 5,
+      b: 'hakuna',
+    };
+    const obs = observable(props, mockTopic);
 
-    o.listen(subscriber);
-    o(6);
-    o(6);
-
-    expect(subscriber).toHaveBeenCalledTimes(1);
-    // called with newValue & oldValue
-    expect(subscriber).toHaveBeenLastCalledWith(6, 5);
+    expect(() => {
+      // @ts-ignore intentionally ignore TS error
+      obs.c = 'matata';
+    }).toThrowError();
   });
-
-  test('kill', () => {
-    const o = observable(5);
-    const listener = jest.fn();
-
-    o.listen(listener);
-    o(6);
-    o.kill();
-    o(7);
-
-    expect(listener).toHaveBeenCalledTimes(1);
-    // called with newValue & oldValue
-    expect(listener).toHaveBeenCalledWith(6, 5);
-  });
-
 });

@@ -1,10 +1,8 @@
-import { IEmitter, ILatest } from '../common';
+import { IEmitter } from '../common';
 import { topic } from '../topic';
 
-export interface IObservableFnDependencies {
+export interface IObservableDependencies {
   topic: typeof topic;
 }
 
-export interface IObservableFn<T> extends ILatest<T>, IEmitter<[T, T]> {
-  (newValue: T): void;
-}
+export type TObservable<T> = T & IEmitter<[T]>;
