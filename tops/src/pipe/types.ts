@@ -9,6 +9,6 @@ export interface IPipeController {
   end(): void;
 }
 
-export interface IPipeFn extends ILatest, IEmitter {
+export interface IPipe extends ILatest, IEmitter {
   (...args: AnyArgs): void;
 }
