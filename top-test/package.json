@@ -1,0 +1,18 @@
+{
+  "name": "top-test",
+  "description": "test package for @b/top",
+  "private": true,
+  "scripts": {
+    "start:ts": "ts-node index.ts",
+    "start:js": "node index.js",
+    "start:mjs": "node index.mjs",
+    "test": "npm run start:js && npm run start:mjs && npm run start:ts",
+    "build": ""
+  },
+  "dependencies": {
+    "@b/top": "1.0.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
