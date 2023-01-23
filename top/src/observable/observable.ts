@@ -1,10 +1,10 @@
 import { ITopic, topic } from '../topic';
-import { TObservable } from './types';
+import { Observable } from './types';
 
 export function observable<T extends object = object>(
   props: T,
   observableTopic: ITopic<[T]> = topic<[T]>(),
-): TObservable<T> {
+): Observable<T> {
   const { subscribe } = observableTopic;
   const target = Object.create(Object.freeze({ subscribe }));
 
@@ -16,5 +16,5 @@ export function observable<T extends object = object>(
     return result;
   }
 
-  return new Proxy<TObservable<T>>(target, { set });
+  return new Proxy<Observable<T>>(target, { set });
 }

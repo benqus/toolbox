@@ -10,7 +10,7 @@
     "build": ""
   },
   "dependencies": {
-    "@b/top": "1.0.0"
+    "@b/top": "^1.0.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"

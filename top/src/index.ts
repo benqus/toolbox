@@ -1,4 +1,4 @@
-export * from './topic/topic';
-export * from './observable/observable';
-export * from './pipe/pipe';
+export * from './topic';
+export * from './observable';
+export * from './pipe';
 export * from './common/types';

@@ -7,7 +7,7 @@ export function throttle<Args extends AnyArgs = AnyArgs>(timeout = 0): ITopic<Ar
   let _t: NodeJS.Timeout | void = void 0;
   let lastArgs: Args;
   
-  return topic<Args>((fn: Fn, args: Args): void => {
+  return topic<Args>((fn: Fn<Args>, args: Args): void => {
     lastArgs = args;
     if (_t) return;
     _t = setTimeout(() => {

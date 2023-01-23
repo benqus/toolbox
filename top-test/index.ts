@@ -1,11 +1,13 @@
-import { topic, observable, pipe } from '@b/top';
+import { topic, observable, pipe, Fn, Publisher } from '@b/top';
 
 // ///// //
 // TOPIC //
 // ///// //
 
+type Args = [ number, number, number ];
+
 // create a topic
-const myTopic = topic<[number, number, number]>();
+const myTopic = topic<Args>();
 
 // listen (subscrube) to data pushed through the topic
 // method returns a function to leave (unsubscribe) the topic
@@ -19,6 +21,21 @@ unsubscribe();
 
 // push more data - not logged
 myTopic(4, 5, 6);
+
+// Custom Topic
+
+const customPublisher: Publisher<Args> = (publish: Fn<Args>, args: Args): void => {
+  // Do something here
+  // ...
+
+  // ...
+  // then notify the subscribers
+  setTimeout(() => publish(...args), 1000);
+};
+
+const customTopic = topic<Args>(customPublisher);
+customTopic.subscribe(console.log);
+customTopic(7, 8, 9);
 
 // ////////// //
 // OBSERVABLE //

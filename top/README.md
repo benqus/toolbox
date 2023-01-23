@@ -16,11 +16,11 @@ No complex typings, endless conditions, massive/untraceable call-stacks, just pu
 - CommonJS: `const { topic } = require('@b/top');`
 - ES Module: `@b/tops/build/top.mjs;`
 
-### Topic
+## 1. Topic
 
-Topics are simple functions that you can listen to and leave when you are done listening to them.
+Topics are simple functions that you can subscribe to and unsubscribe when you are done with them.
 
-TypeScript example:
+Basic TypeScript example:
 ```ts
 import { topic } from '@b/top';
 
@@ -29,13 +29,13 @@ const myTopic = topic<[number, number, number]>();
 
 // listen (subscrube) to data pushed through the topic
 // method returns a function to leave (unsubscribe) the topic
-const leaveMyTopic = myTopic.listen(console.log);
+const unsubscribe = myTopic.listen(console.log);
 
 // push data through the topic
 myTopic(1, 2, 3);
 
 // leave myTopic
-leaveMyTopic();
+const unsubscribe();
 
 // push more data - not logged
 myTopic(4, 5, 6);
@@ -43,41 +43,37 @@ myTopic(4, 5, 6);
 
 > **Note**: Notice the topic argument listed as a generic Array of types!
 
-### Observable
-
-Like topics, Observables are functions as well that you can listen to.
-Observables update when you pass an input parameter to them. Default value is `null`.
-When an update happens, all listeners are notified with the new value and the previous value as listener parameters.
-
-TypeScript example:
+Topics are also customiseable with their publish logic:
 ```ts
-import { observable } from '@b/top';
+import { Fn, Publisher } from '@b/top';
 
-interface MyValue {
-  value: number;
-}
+type Args = [ number, number, number ];
 
-// create observable
-const myObservable = observable<MyValue>();
+const customPublisher: Publisher<Args> = (publish: Fn<Args>, args: Args): void => {
+  // Do something here
+  // ...
 
-// listen (subscrube) to changes in the value of the observable
-// method returns a function to unobserve (unsubscribe)
-const unobserve = myObservable.listen((newValue: MyValue, oldValue: MyValue): void => {
-  console.log(newValue);
-  console.log(oldValue);
-});
+  // ...
+  // then notify the subscribers
+  publish(...args);
+};
 
-// update observable
-myObservable({ value: 1 });
-
-// unobserve observable
-unobserve();
-
-// update observable again - not logged
-myObservable({ value: 2 });
-
-// return the latest value of the observable
-console.log(myObservable.latest());
-
+const myTopic = topic<Args>(customPublisher);
 ```
 
+> **Important**: When creating a custom publisher, you will be responsible to invoking the `publish` function! Without that the topic won't notify its subscribers.
+
+#### Custom/Async Topics
+
+Custom topics with basic **Throttle** and **Debounce** logic are provided by the library:
+```ts
+import { asyncTopic } from '@/top';
+
+// Throttled topic that publishes the last message every 10ms (default is 0ms)
+const throttledTopic = asyncTopic.throttle(10); 
+const debouncedTopic = asyncTopic.debounce(10); 
+```
+
+## 2. Observable
+
+To do...

@@ -1,4 +1,4 @@
-import { ISubscribable, ILatest } from '../common/types';
+import { ISubscribable } from '../common/types';
 import { observable } from './observable';
 
 interface TestObservable {
@@ -7,12 +7,11 @@ interface TestObservable {
 }
 
 describe('observable', () => {
-  let mockTopic: jest.Mock & ISubscribable<[TestObservable]> & ILatest<[TestObservable]>;
+  let mockTopic: jest.Mock & ISubscribable<[TestObservable]>;
 
   beforeEach(() => {
     const subscribe = jest.fn();
-    const latest = jest.fn();
-    mockTopic = Object.assign(jest.fn(), { subscribe, latest });
+    mockTopic = Object.assign(jest.fn(), { subscribe });
   });
 
   test('create sealed object with custom topic', () => {
@@ -52,6 +51,7 @@ describe('observable', () => {
 
     obs.b = 'matata';
 
+    expect(subscriber).toHaveBeenCalledTimes(1);
     expect(subscriber).toHaveBeenCalledWith(obs);
   });
 
@@ -63,8 +63,13 @@ describe('observable', () => {
     const obs = observable(props, mockTopic);
 
     expect(() => {
-      // @ts-ignore intentionally ignore TS error
+      // @ts-ignore intentional TS error
       obs.c = 'matata';
+    }).toThrowError();
+
+    expect(() => {
+      // @ts-ignore override existing property
+      obs.subscribe = () => {};
     }).toThrowError();
   });
 });

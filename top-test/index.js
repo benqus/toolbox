@@ -1,4 +1,4 @@
-const { topic, observable, pipe } = require('@b/tops');
+const { topic, observable, pipe } = require('@b/top');
 
 // create a topic
 const myTopic = topic();

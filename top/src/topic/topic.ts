@@ -1,13 +1,13 @@
 import { AnyArgs, Fn, IUnsubscribe } from '../common/types';
-import { ITopic } from './types';
+import { ITopic, Publisher } from './types';
 
 export function topic<Args extends AnyArgs = AnyArgs>(
-  exec: Fn<[Fn, Args]> = (fn: Fn, args: Args): void => fn(...args),
+  publisher: Publisher<Args> = (fn: Fn<Args>, args: Args): void => fn(...args),
 ): ITopic<Args> {
   const subscriptions: Set<Fn<Args>> = new Set();
 
   function _topic(...args: Args): void {
-    exec(publish, args);
+    publisher(publish, args);
   }
 
   function publish(...args: Args): void {

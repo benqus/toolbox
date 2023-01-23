@@ -1,3 +1,3 @@
-import { ISubscribable, ILatest } from '../common/types';
+import { ISubscribable } from '../common/types';
 
-export type TObservable<T> = T & ISubscribable<[T]>;
+export type Observable<T> = T & ISubscribable<[T]>;
