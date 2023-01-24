@@ -55,6 +55,53 @@ describe('observable', () => {
     expect(subscriber).toHaveBeenCalledWith(obs);
   });
 
+  test('nested observable subscriptions', () => {
+    const subscriber = jest.fn();
+    const parent = observable({
+      a: 5,
+      b: 'b',
+      child: observable({
+        c: 'hakuna'
+      }),
+    });
+    parent.subscribe(subscriber);
+
+    expect(parent).toEqual({
+      a: 5,
+      b: 'b',
+      child: {
+        c: 'hakuna'
+      },
+    });
+
+    parent.child.c = 'matata';
+
+    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(subscriber).toHaveBeenCalledWith(parent);
+    expect(parent.child.c).toEqual('matata');
+  });
+
+  test('nested observable resubscription', () => {
+    const subscriber = jest.fn();
+    const parent = observable({
+      a: 5,
+      b: 'b',
+      child: observable({
+        c: 'hakuna'
+      }),
+    });
+    parent.child = observable({
+      c: 'mat...'
+    });
+    parent.subscribe(subscriber);
+
+    parent.child.c = 'matata';
+
+    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(subscriber).toHaveBeenCalledWith(parent);
+    expect(parent.child.c).toEqual('matata');
+  });
+
   test('observable is sealed, new property assignment throws error', () => {
     const props = {
       a: 5,

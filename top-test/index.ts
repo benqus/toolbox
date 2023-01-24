@@ -1,4 +1,4 @@
-import { topic, observable, pipe, Fn, Publisher } from '@b/top';
+import { topic, Topic, observable, pipe, Fn, Publisher } from '@b/top';
 
 // ///// //
 // TOPIC //
@@ -7,7 +7,7 @@ import { topic, observable, pipe, Fn, Publisher } from '@b/top';
 type Args = [ number, number, number ];
 
 // create a topic
-const myTopic = topic<Args>();
+const myTopic: Topic<Args> = topic<Args>();
 
 // listen (subscrube) to data pushed through the topic
 // method returns a function to leave (unsubscribe) the topic

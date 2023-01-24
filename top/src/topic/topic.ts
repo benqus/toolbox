@@ -1,4 +1,4 @@
-import { AnyArgs, Fn, IUnsubscribe } from '../common/types';
+import { AnyArgs, Fn, Unsubscriber } from '../common/types';
 import { Topic, Publisher } from './types';
 
 export function topic<Args extends AnyArgs = AnyArgs>(
@@ -14,7 +14,7 @@ export function topic<Args extends AnyArgs = AnyArgs>(
     subscriptions.forEach((fn: Fn<Args>): void => fn(...args));
   }
 
-  function subscribe(fn: Fn<Args>): IUnsubscribe {
+  function subscribe(fn: Fn<Args>): Unsubscriber {
     subscriptions.add(fn);
     return (): boolean => subscriptions.delete(fn);
   }

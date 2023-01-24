@@ -22,7 +22,7 @@ Topics are simple functions that you can subscribe to and unsubscribe when you a
 
 Basic TypeScript example:
 ```ts
-import { topic } from '@b/top';
+import { topic, Topic } from '@b/top';
 
 // create a topic
 const myTopic = topic<[number, number, number]>();
