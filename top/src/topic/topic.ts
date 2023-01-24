@@ -1,9 +1,9 @@
 import { AnyArgs, Fn, IUnsubscribe } from '../common/types';
-import { ITopic, Publisher } from './types';
+import { Topic, Publisher } from './types';
 
 export function topic<Args extends AnyArgs = AnyArgs>(
   publisher: Publisher<Args> = (fn: Fn<Args>, args: Args): void => fn(...args),
-): ITopic<Args> {
+): Topic<Args> {
   const subscriptions: Set<Fn<Args>> = new Set();
 
   function _topic(...args: Args): void {

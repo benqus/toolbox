@@ -5,13 +5,13 @@ const myTopic = topic();
 
 // listen (subscrube) to data pushed through the topic
 // method returns a function to leave (unsubscribe) the topic
-const leaveMyTopic = myTopic.listen(console.log);
+const unsubscribe = myTopic.subscribe(console.log);
 
 // push data through the topic
 myTopic(1, 2, 3);
 
 // leave myTopic
-leaveMyTopic();
+unsubscribe();
 
 // push more data
 myTopic(4, 5, 6);

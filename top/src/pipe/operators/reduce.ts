@@ -1,7 +1,7 @@
 import { AnyArgs, Fn } from '../../common/types';
-import { IOperatorFn, IPipeController } from '../types';
+import { Operator, IPipeController } from '../types';
 
-export function reduce(fn: Fn): IOperatorFn {
+export function reduce(fn: Fn): Operator {
   function _reduce({ next }: IPipeController, ...args: AnyArgs): void {
     const result = fn(...args);
     next(result);

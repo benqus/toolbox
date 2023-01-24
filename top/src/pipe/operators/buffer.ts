@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common/types';
-import { IOperatorFn, IPipeController } from '../types';
+import { Operator, IPipeController } from '../types';
 
-export function buffer(size: number): IOperatorFn {
+export function buffer(size: number): Operator {
   let buffer: Array<AnyArgs> = [];
 
   function _buffer(options: IPipeController, ...args: AnyArgs): void {

@@ -1,15 +1,15 @@
 import { AnyArgs, Fn } from '../../common/types';
-import { IOperatorFn, IPipeController } from '../types';
+import { Operator, IPipeController } from '../types';
 
-export function distinct(fn: Fn): IOperatorFn {
+export function distinctReduce(fn: Fn): Operator {
   let lastValue: unknown;
   
-  function _distinct({ next }: IPipeController, ...args: AnyArgs) {
+  function _distinctReduce({ next }: IPipeController, ...args: AnyArgs) {
     const newValue = fn(...args);
     if (newValue === lastValue) return;
     lastValue = newValue;
     next(...args);
   }
 
-  return _distinct;
+  return _distinctReduce;
 }

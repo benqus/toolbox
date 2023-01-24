@@ -1,9 +1,9 @@
-import { ITopic, topic } from '../topic';
+import { Topic, topic } from '../topic';
 import { Observable } from './types';
 
 export function observable<T extends object = object>(
   props: T,
-  observableTopic: ITopic<[T]> = topic<[T]>(),
+  observableTopic: Topic<[T]> = topic<[T]>(),
 ): Observable<T> {
   const { subscribe } = observableTopic;
   const target = Object.create(Object.freeze({ subscribe }));

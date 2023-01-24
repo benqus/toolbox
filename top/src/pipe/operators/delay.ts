@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common/types';
-import { IOperatorFn, IPipeController } from '../types';
+import { Operator, IPipeController } from '../types';
 
-export function delay(ms: number): IOperatorFn {
+export function delay(ms: number): Operator {
   function _delay(options: IPipeController, ...args: AnyArgs): void {
     setTimeout(() => options.next(...args), ms);
   }

@@ -1,16 +1,16 @@
 import { createMockPipeController } from '../../__mocks__/pipeController';
-import { distinct } from './distinct';
+import { distinctReduce } from './distinctReduce';
 
-describe('distinct', () => {
+describe('distinctReduce', () => {
   test('fn', () => {
-    const s = distinct(() => ({}));
+    const s = distinctReduce(() => ({}));
 
     expect(s).toEqual(expect.any(Function));
   });
   
   test('triggers next only if last value is not the same', () => {
     const optionsMock = createMockPipeController();
-    const s = distinct((n, m) => n + m);
+    const s = distinctReduce((n, m) => n + m);
 
     s(optionsMock, 1, 2);
     s(optionsMock, 3, 4);

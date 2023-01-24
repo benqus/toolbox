@@ -1,14 +1,15 @@
 import { topic } from '../topic';
 import { AnyArgs } from '../common/types';
-import { IOperatorFn, IPipe, IPipeController} from './types';
+import { Operator, Pipe, IPipeController} from './types';
 
-export function pipe(...operations: Array<IOperatorFn>): IPipe {
-  const _topic = topic();
-  let lastArgs: AnyArgs = [];
+export function pipe<I extends AnyArgs = AnyArgs, O extends AnyArgs = AnyArgs>(...operations: Array<Operator>): Pipe {
+  const _topic = topic<O>();
+  let lastOperatorOutput: AnyArgs = [];
+  let latestArgs;
 
   function createPipeController(i: number): IPipeController {
     function next(...args: AnyArgs): void {
-      lastArgs = (args.length === 0 ? lastArgs : args);
+      lastOperatorOutput = (args.length === 0 ? lastOperatorOutput : args);
       executeOperation(i + 1);
     }
 
@@ -23,19 +24,20 @@ export function pipe(...operations: Array<IOperatorFn>): IPipe {
     const fn = operations[i];
     if (fn) {
       const options = createPipeController(i);
-      fn(options, ...lastArgs);
+      fn(options, ...lastOperatorOutput);
     } else {
-      _topic(...lastArgs);
+      latestArgs = lastOperatorOutput;
+      _topic(...latestArgs);
     }
   }
 
-  function _pipe(...args: AnyArgs): IPipe {
-    lastArgs = args;
+  function _pipe(...args: I): Pipe {
+    lastOperatorOutput = args;
     executeOperation(0);
     return _pipe;
   }
 
-  _pipe.latest = (): AnyArgs => lastArgs;
+  _pipe.latest = (): O => latestArgs ?? [] as O;
   _pipe.subscribe = _topic.subscribe;
 
   return _pipe;

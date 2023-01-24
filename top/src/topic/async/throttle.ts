@@ -1,9 +1,9 @@
 import { AnyArgs, Fn } from '../../common/types';
 import { topic } from '../topic';
-import { ITopic } from '../types';
+import { Topic } from '../types';
 
 // Throttle Topic Publish handler
-export function throttle<Args extends AnyArgs = AnyArgs>(timeout = 0): ITopic<Args> {
+export function throttle<Args extends AnyArgs = AnyArgs>(timeout = 0): Topic<Args> {
   let _t: NodeJS.Timeout | void = void 0;
   let lastArgs: Args;
   

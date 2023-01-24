@@ -28,7 +28,7 @@
     "parcel:debug": "parcel build ./src/index.ts --dist-dir debug",
     "parcel:build": "parcel build ./src/index.ts --dist-dir build --no-source-maps --no-cache",
     "tsc": "tsc --noEmit",
-    "rm": "rm -rf build/ debug/ coverage/"
+    "rm": "rm -rf build/ debug/ coverage/ .parcel-cache/"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.8.2",

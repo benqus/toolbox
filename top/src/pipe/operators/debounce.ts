@@ -1,7 +1,7 @@
 import { AnyArgs } from '../../common/types';
-import { IOperatorFn, IPipeController } from '../types';
+import { Operator, IPipeController } from '../types';
 
-export function debounce(ms: number): IOperatorFn {
+export function debounce(ms: number): Operator {
   let lastArgs: AnyArgs;
   let lastOptions: IPipeController;
   let timeout: NodeJS.Timeout;
