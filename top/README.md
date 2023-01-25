@@ -1,10 +1,13 @@
 `@b/top`
 ===
 
-Simple is best. Topics, Observables, Pipes. Simple and functional af.
+Simple is best. Topics, Observables, Pipes. Simple af.
 
-This collection of tools builds on JavaScript's most powerful feature: functions.
-No complex typings, endless conditions, massive/untraceable call-stacks, just pure functions with minimal and specific purposes so your code can stay as explicit and self-explanatory as possible. Don't we all like it when a library does its black magic and we don't know why, huh?
+This collection of JavaScript/TypeScript tools builds on built-in `object`s and `function`s.
+No complex typings, endless conditions, massive/untraceable call-stacks, just minimal and specific purposes so your code can stay as explicit and self-explanatory as possible.
+Don't we all like it when a library does its black magic and we don't know why, huh?
+
+Best part is that because it's functions and objects, you can easily mock them for testing!
 
 ## Install
 
@@ -12,9 +15,9 @@ No complex typings, endless conditions, massive/untraceable call-stacks, just pu
 
 ## Usage
 
-- TypeScript: `import { topic } from '@b/top';`
-- CommonJS: `const { topic } = require('@b/top');`
-- ES Module: `@b/tops/build/top.mjs;`
+- TypeScript: `import { topic, ... } from '@b/top';`
+- CommonJS: `const { topic, ... } = require('@b/top');`
+- ES Module: `import { topic, ... } from @b/tops/build/top.mjs;`
 
 ## 1. Topic
 
@@ -24,21 +27,20 @@ Basic TypeScript example:
 ```ts
 import { topic, Topic } from '@b/top';
 
-// create a topic
-const myTopic = topic<[number, number, number]>();
+type TopicArgs = [number, number, number];
 
-// listen (subscrube) to data pushed through the topic
-// method returns a function to leave (unsubscribe) the topic
+// create a topic
+const myTopic: Topic<TopicArgs> = topic<TopicArgs>();
+
+// subscribe to data pushed through the topic
+// returns a function to unsubscribe from the topic
 const unsubscribe = myTopic.listen(console.log);
 
 // push data through the topic
 myTopic(1, 2, 3);
 
-// leave myTopic
-const unsubscribe();
-
-// push more data - not logged
-myTopic(4, 5, 6);
+// unsubscribe from topic
+unsubscribe();
 ```
 
 > **Note**: Notice the topic argument listed as a generic Array of types!
@@ -52,9 +54,7 @@ type Args = [ number, number, number ];
 const customPublisher: Publisher<Args> = (publish: Fn<Args>, args: Args): void => {
   // Do something here
   // ...
-
-  // ...
-  // then notify the subscribers
+  // continue notifying the topic subscribers
   publish(...args);
 };
 
@@ -75,5 +75,60 @@ const debouncedTopic = asyncTopic.debounce(10);
 ```
 
 ## 2. Observable
+
+Observables are simple Proxied objects. They can have any value as their property, including topics, nested observables and pipes - in this case the root observable will automatically subscribe to the nested `ISubscribable`.
+
+Observables must have a specific initial schema or interface as they are sealed after creation.
+
+Basic TypeScript example:
+```ts
+import { observable, Observable } from '@b/top';
+
+interface MyObservable {
+  value: number;
+  child: Observable<{ name: string }>;
+}
+
+// create observable
+const myObservable: Observable<MyObservable> = observable<MyObservable>({
+  value: 0,
+  child: observable<{ name: string }>({
+    name: 'John Doe'
+  }),
+});
+
+// subscribe works the same way as for the topic
+const unobserve = myObservable.subscribe(console.log);
+
+// update observable via simple attribute assignments or `Object.assign`
+myObservable.value = 1;
+```
+
+> **Note:** if you are using observables for state-management, it is recommended that you use a throttled topic - either the built-in solutions or your own custom one to bundle multiple updates into one update notification.
+
+Observables come with a built-in topic that handles the notifications but it is possible to re/use existing topics:
+
+```ts
+import { asyncTopic, observable } from '@b/top';
+
+// create throttled topic
+const throttledTopic = asyncTopic.throttle<[unknown]>(0);
+throttledTopic.subscribe(console.log);
+
+// create observable with throttled topic
+const obs = observable({ a: 5 }, throttledTopic);
+
+// publish into throttled topic
+throttledTopic({ a: 6});
+
+// publish via the observable into throttled topic
+obs.a = 7;
+```
+
+## 3. Pipe
+
+Pipes are a pre-defined, ordered set of operations. Similar to RxJS's streams, however they are intentionally kept simple to avoid building overly complex pipelines that are hard to understand, maintain and debug.
+
+There are a few basic built-in operators to help you get going but it is entirely possible to implement fully custom operators - don't over-do it though...
 
 To do...

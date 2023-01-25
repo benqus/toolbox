@@ -1,4 +1,4 @@
-# Dependency directories
+.DS_Store
 .parcel-cache/
 node_modules/
 

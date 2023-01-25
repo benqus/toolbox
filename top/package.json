@@ -1,6 +1,6 @@
 {
   "name": "@b/top",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Topics, Observables, Pipes. Simple af.",
   "license": "BSD-3-Clause",
   "keywords": [
@@ -16,8 +16,7 @@
   "files": [
     "./build",
     "LICENSE",
-    "package.json",
-    "README.md"
+    "package.json"
   ],
   "scripts": {
     "debug": "npm run rm && npm run test && npm run parcel:debug",
