@@ -2,7 +2,10 @@
   "name": "@b/top",
   "version": "1.0.0-rc.1",
   "description": "Topics, Observables, Pipes. Simple af.",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "reactive",
     "topics",
