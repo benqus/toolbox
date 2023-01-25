@@ -1,6 +1,6 @@
 {
   "name": "@benqus/top",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Topics, Observables, Pipes. Simple af.",
   "license": "MIT",
   "publishConfig": {
@@ -12,6 +12,16 @@
     "pipes",
     "observables"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benqus/toolbox.git"
+  },
+  "author": "Bence Kormos <ben.kormos@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/benqus/toolbox/issues"
+  },
+  "contributors": [],
+  "homepage": "https://github.com/benqus/toolbox#readme",
   "source": "src/index.ts",
   "main": "build/top.js",
   "module": "build/top.mjs",

@@ -10,7 +10,7 @@
     "build": ""
   },
   "dependencies": {
-    "@benqus/top": "^1.0.0-rc.1"
+    "@benqus/top": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"
