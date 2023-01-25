@@ -1,6 +1,6 @@
 {
   "name": "top-test",
-  "description": "test package for @b/top",
+  "description": "test package for @benqus/top",
   "private": true,
   "scripts": {
     "start:ts": "ts-node index.ts",
@@ -10,7 +10,7 @@
     "build": ""
   },
   "dependencies": {
-    "@b/top": "^1.0.0-rc.1"
+    "@benqus/top": "^1.0.0-rc.1"
   },
   "devDependencies": {
     "ts-node": "^10.9.1"

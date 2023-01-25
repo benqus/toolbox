@@ -1,5 +1,5 @@
 {
-  "name": "@b/top",
+  "name": "@benqus/top",
   "version": "1.0.0-rc.1",
   "description": "Topics, Observables, Pipes. Simple af.",
   "license": "MIT",

@@ -3,6 +3,6 @@
 
 Simple, modern TypeScript tools for modern JS/TS applications.
 
-## @b/tops
+## @benqus/tops
 
 See docs in the folder

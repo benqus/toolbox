@@ -1,4 +1,4 @@
-import { topic, Topic, observable, pipe, Fn, Publisher } from '@b/top';
+import { topic, Topic, observable, pipe, Fn, Publisher } from '@benqus/top';
 
 // ///// //
 // TOPIC //

@@ -1,4 +1,4 @@
-import { topic, observable, pipe } from '@b/top/build/top.mjs';
+import { topic, observable, pipe } from '@benqus/top/build/top.mjs';
 
 // create a topic
 const myTopic = topic();

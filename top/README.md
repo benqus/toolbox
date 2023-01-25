@@ -1,4 +1,4 @@
-`@b/top`
+`@benqus/top`
 ===
 
 Simple is best. Topics, Observables, Pipes. Simple af.
@@ -11,13 +11,13 @@ Best part is that because it's functions and objects, you can easily mock them f
 
 ## Install
 
-`npm i @b/top` or `yarn add @b/top` (if you like versioning your version control too...)
+`npm i @benqus/top` or `yarn add @benqus/top` (if you like versioning your version control too...)
 
 ## Usage
 
-- TypeScript: `import { topic, ... } from '@b/top';`
-- CommonJS: `const { topic, ... } = require('@b/top');`
-- ES Module: `import { topic, ... } from @b/tops/build/top.mjs;`
+- TypeScript: `import { topic, ... } from '@benqus/top';`
+- CommonJS: `const { topic, ... } = require('@benqus/top');`
+- ES Module: `import { topic, ... } from @benqus/tops/build/top.mjs;`
 
 ## 1. Topic
 
@@ -25,7 +25,7 @@ Topics are simple functions that you can subscribe to and unsubscribe when you a
 
 Basic TypeScript example:
 ```ts
-import { topic, Topic } from '@b/top';
+import { topic, Topic } from '@benqus/top';
 
 type TopicArgs = [number, number, number];
 
@@ -47,7 +47,7 @@ unsubscribe();
 
 Topics are also customiseable with their publish logic:
 ```ts
-import { Fn, Publisher } from '@b/top';
+import { Fn, Publisher } from '@benqus/top';
 
 type Args = [ number, number, number ];
 
@@ -82,7 +82,7 @@ Observables must have a specific initial schema or interface as they are sealed 
 
 Basic TypeScript example:
 ```ts
-import { observable, Observable } from '@b/top';
+import { observable, Observable } from '@benqus/top';
 
 interface MyObservable {
   value: number;
@@ -109,7 +109,7 @@ myObservable.value = 1;
 Observables come with a built-in topic that handles the notifications but it is possible to re/use existing topics:
 
 ```ts
-import { asyncTopic, observable } from '@b/top';
+import { asyncTopic, observable } from '@benqus/top';
 
 // create throttled topic
 const throttledTopic = asyncTopic.throttle<[unknown]>(0);

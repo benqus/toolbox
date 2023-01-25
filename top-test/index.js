@@ -1,4 +1,4 @@
-const { topic, observable, pipe } = require('@b/top');
+const { topic, observable, pipe } = require('@benqus/top');
 
 // create a topic
 const myTopic = topic();
