@@ -34,7 +34,7 @@ const myTopic: Topic<TopicArgs> = topic<TopicArgs>();
 
 // subscribe to data pushed through the topic
 // returns a function to unsubscribe from the topic
-const unsubscribe = myTopic.listen(console.log);
+const unsubscribe = myTopic.subscribe(console.log);
 
 // push data through the topic
 myTopic(1, 2, 3);
@@ -67,7 +67,7 @@ const myTopic = topic<Args>(customPublisher);
 
 Custom topics with basic **Throttle** and **Debounce** logic are provided by the library:
 ```ts
-import { asyncTopic } from '@/top';
+import { asyncTopic } from '@benqus/top';
 
 // Throttled topic that publishes the last message every 10ms (default is 0ms)
 const throttledTopic = asyncTopic.throttle(10); 
