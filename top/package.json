@@ -1,6 +1,6 @@
 {
   "name": "@benqus/top",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "description": "Topics, Observables, Pipes. Simple af.",
   "license": "MIT",
   "publishConfig": {
