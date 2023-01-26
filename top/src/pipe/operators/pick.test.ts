@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { pick } from './pick';
 
 describe('pick', () => {
@@ -10,7 +10,7 @@ describe('pick', () => {
   });
   
   test('triggers next only if last value is not the same', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const p = pick('a', 'b');
     const object1 = {
       a: 3,
@@ -31,10 +31,10 @@ describe('pick', () => {
       d() {},
     };
 
-    p(optionsMock, object1, object2, object3);
+    p(mockNextFn, object1, object2, object3);
 
-    expect(optionsMock.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock.next).toHaveBeenLastCalledWith(
+    expect(mockNextFn).toHaveBeenCalledTimes(1);
+    expect(mockNextFn).toHaveBeenLastCalledWith(
       {
         a: object1.a,
         b: object1.b,

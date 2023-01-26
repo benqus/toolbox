@@ -1,15 +1,15 @@
 import { AnyArgs } from '../../common/types';
-import { Operator, IPipeController } from '../types';
+import { Operator, NextFn } from '../types';
 
 export function skip(count: number): Operator {
   let i = 0;
 
-  function _skip(options: IPipeController, ...args: AnyArgs): void {
+  function _skip(next: NextFn, ...args: AnyArgs): void {
     if (i < count) {
       i += 1;
       return;
     }
-    options.next(...args);
+    next(...args);
   }
 
   return _skip;

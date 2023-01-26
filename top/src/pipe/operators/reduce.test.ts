@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { reduce } from './reduce';
 
 describe('transform', () => {
@@ -9,13 +9,13 @@ describe('transform', () => {
   });
   
   test('triggers next only if last value is not the same', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const output = [1, 2, 3];
     const s = reduce(() => output);
 
-    s(optionsMock);
+    s(mockNextFn);
 
-    expect(optionsMock.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock.next).toHaveBeenCalledWith(output);
+    expect(mockNextFn).toHaveBeenCalledTimes(1);
+    expect(mockNextFn).toHaveBeenCalledWith(output);
   });
 });

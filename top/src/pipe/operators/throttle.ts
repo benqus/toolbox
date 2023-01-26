@@ -1,19 +1,19 @@
 import { AnyArgs } from '../../common/types';
-import { Operator, IPipeController } from '../types';
+import { Operator, NextFn } from '../types';
 
 export function throttle(ms = 0): Operator {
   let lastArgs: AnyArgs;
-  let lastController: IPipeController;
+  let lastNextFn: NextFn;
   let timeout: NodeJS.Timeout | void;
 
   function execute(): void {
     timeout = clearTimeout(timeout as NodeJS.Timeout);
-    lastController.next(...lastArgs);
+    lastNextFn(...lastArgs);
   }
 
-  function _throttle(options: IPipeController, ...args: AnyArgs): void {
+  function _throttle(next: NextFn, ...args: AnyArgs): void {
     lastArgs = args;
-    lastController = options;
+    lastNextFn = next;
     timeout = timeout ?? setTimeout(execute, ms);
   }
 

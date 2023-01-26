@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { fanout } from './fanout';
 
 describe('fanout', () => {
@@ -9,7 +9,7 @@ describe('fanout', () => {
   });
   
   test('invoke', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const exec1 = jest.fn();
     const exec2 = jest.fn();
     const exec3 = jest.fn();
@@ -19,10 +19,10 @@ describe('fanout', () => {
       exec3,
     );
 
-    s(optionsMock, 1, 2, 3);
+    s(mockNextFn, 1, 2, 3);
 
-    expect(optionsMock.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock.next).toHaveBeenCalledWith(1, 2, 3);
+    expect(mockNextFn).toHaveBeenCalledTimes(1);
+    expect(mockNextFn).toHaveBeenCalledWith(1, 2, 3);
     
     expect(exec1).toHaveBeenCalledTimes(1);
     expect(exec1).toHaveBeenCalledWith(1, 2, 3);

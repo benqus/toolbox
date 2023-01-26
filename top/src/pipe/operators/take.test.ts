@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { take } from './take';
 
 describe('take', () => {
@@ -9,20 +9,20 @@ describe('take', () => {
   });
   
   test('takes only x calls', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const fn = take(4);
 
-    fn(optionsMock, 1, 2, 3);
-    fn(optionsMock, 2, 3, 4);
-    fn(optionsMock, 3, 4, 5);
-    fn(optionsMock, 4, 5, 6);
-    fn(optionsMock, 5, 6, 7);
-    fn(optionsMock, 6, 7, 8);
+    fn(mockNextFn, 1, 2, 3);
+    fn(mockNextFn, 2, 3, 4);
+    fn(mockNextFn, 3, 4, 5);
+    fn(mockNextFn, 4, 5, 6);
+    fn(mockNextFn, 5, 6, 7);
+    fn(mockNextFn, 6, 7, 8);
 
-    expect(optionsMock.next).toHaveBeenCalledTimes(4);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(1, 1, 2, 3);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(2, 2, 3, 4);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(3, 3, 4, 5);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(4, 4, 5, 6);
+    expect(mockNextFn).toHaveBeenCalledTimes(4);
+    expect(mockNextFn).toHaveBeenNthCalledWith(1, 1, 2, 3);
+    expect(mockNextFn).toHaveBeenNthCalledWith(2, 2, 3, 4);
+    expect(mockNextFn).toHaveBeenNthCalledWith(3, 3, 4, 5);
+    expect(mockNextFn).toHaveBeenNthCalledWith(4, 4, 5, 6);
   });
 });

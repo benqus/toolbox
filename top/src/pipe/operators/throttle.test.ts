@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { throttle } from './throttle';
 
 jest.useFakeTimers();
@@ -16,29 +16,29 @@ describe('throttle', () => {
   });
   
   test('throttle calls', () => {
-    const optionsMock1 = createMockPipeController();
-    const optionsMock2 = createMockPipeController();
-    const optionsMock3 = createMockPipeController();
-    const optionsMock4 = createMockPipeController();
+    const mockNextFn1 = createNextFn();
+    const mockNextFn2 = createNextFn();
+    const mockNextFn3 = createNextFn();
+    const mockNextFn4 = createNextFn();
     const d = throttle(50);
 
-    d(optionsMock1, 1);
-    d(optionsMock2, 2);
+    d(mockNextFn1, 1);
+    d(mockNextFn2, 2);
 
     jest.advanceTimersByTime(50);
 
-    d(optionsMock3, 3);
-    d(optionsMock4, 4);
+    d(mockNextFn3, 3);
+    d(mockNextFn4, 4);
 
     jest.advanceTimersByTime(50);
 
-    expect(optionsMock1.next).not.toHaveBeenCalled();
-    expect(optionsMock2.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock2.next).toHaveBeenCalledWith(2);
+    expect(mockNextFn1).not.toHaveBeenCalled();
+    expect(mockNextFn2).toHaveBeenCalledTimes(1);
+    expect(mockNextFn2).toHaveBeenCalledWith(2);
 
-    expect(optionsMock3.next).not.toHaveBeenCalled();
-    expect(optionsMock4.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock4.next).toHaveBeenCalledWith(4);
+    expect(mockNextFn3).not.toHaveBeenCalled();
+    expect(mockNextFn4).toHaveBeenCalledTimes(1);
+    expect(mockNextFn4).toHaveBeenCalledWith(4);
   });
   
 });

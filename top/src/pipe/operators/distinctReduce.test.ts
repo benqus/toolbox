@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { distinctReduce } from './distinctReduce';
 
 describe('distinctReduce', () => {
@@ -9,15 +9,15 @@ describe('distinctReduce', () => {
   });
   
   test('triggers next only if last value is not the same', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const s = distinctReduce((n, m) => n + m);
 
-    s(optionsMock, 1, 2);
-    s(optionsMock, 3, 4);
-    s(optionsMock, 3, 4);
+    s(mockNextFn, 1, 2);
+    s(mockNextFn, 3, 4);
+    s(mockNextFn, 3, 4);
 
-    expect(optionsMock.next).toHaveBeenCalledTimes(2);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(1, 1, 2);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(2, 3, 4);
+    expect(mockNextFn).toHaveBeenCalledTimes(2);
+    expect(mockNextFn).toHaveBeenNthCalledWith(1, 1, 2);
+    expect(mockNextFn).toHaveBeenNthCalledWith(2, 3, 4);
   });
 });

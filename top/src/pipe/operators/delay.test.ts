@@ -1,4 +1,4 @@
-import { createMockPipeController } from '../../__mocks__/pipeController';
+import { createNextFn } from '../../__mocks__/nextFn';
 import { delay } from './delay';
 
 jest.useFakeTimers();
@@ -15,19 +15,19 @@ describe('delay', () => {
   });
   
   test('delays execution by x milliseconds', () => {
-    const optionsMock = createMockPipeController();
+    const mockNextFn = createNextFn();
     const fn = delay(1000);
 
-    fn(optionsMock, 1, 2, 3);
-    expect(optionsMock.next).not.toHaveBeenCalled();
+    fn(mockNextFn, 1, 2, 3);
+    expect(mockNextFn).not.toHaveBeenCalled();
 
     jest.advanceTimersByTime(500);
 
-    expect(optionsMock.next).not.toHaveBeenCalled();
+    expect(mockNextFn).not.toHaveBeenCalled();
 
     jest.advanceTimersByTime(1000);
     
-    expect(optionsMock.next).toHaveBeenCalledTimes(1);
-    expect(optionsMock.next).toHaveBeenNthCalledWith(1, 1, 2, 3);
+    expect(mockNextFn).toHaveBeenCalledTimes(1);
+    expect(mockNextFn).toHaveBeenNthCalledWith(1, 1, 2, 3);
   });
 });
