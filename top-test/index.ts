@@ -1,4 +1,4 @@
-import { topic, Topic, observable, pipe, Fn, Publisher } from '@benqus/top';
+import { topic, Topic, observable, Fn, Publisher } from '@benqus/top';
 
 // ///// //
 // TOPIC //
@@ -66,4 +66,124 @@ myObservable.value = 2;
 // //// //
 // PIPE //
 // //// //
+import { pipe, Pipe, operators } from '@benqus/top';
 
+interface A {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+}
+
+type B = Pick<A, 'a'|'b'>;
+
+type Params = [ A ];
+type Outputs = [ B ];
+
+const { delay, pick } = operators;
+
+const pipeline: Pipe = pipe<Params, Outputs>(
+  delay(1000),
+  pick('a', 'b'),
+);
+pipeline.subscribe((b: B): void => {
+  console.timeLog('pipeline', 'pipeline output (B):', b);
+  console.timeEnd('pipeline');
+});
+
+console.time('pipeline');
+
+// push data through the pipe
+pipeline({
+  a: 'a',
+  b: 'b',
+  c: 'c',
+  d: 'd',
+});
+
+// Example 2
+interface AppState {
+  [key: string]: unknown;
+  isLoaded: boolean;
+  isReady: boolean;
+}
+
+const { reduce, distinctReduce, fanout, filter } = operators;
+
+// create an application state with (optionally nested) observables
+const appState = observable<AppState>({
+  isLoaded: false,
+  isReady: false,
+  // ...
+});
+
+// create a notification pipe
+const appStateIsLoadedUpdate = pipe(
+  fanout((appState: AppState): void => {
+    console.log('AppState is changing to', appState);
+  }),
+  distinctReduce(({ isLoaded }: AppState): boolean => isLoaded),
+  reduce(({ isLoaded }: AppState): boolean => isLoaded),
+  filter(Boolean),
+);
+
+// subscribe pipe to state changes
+appState.subscribe(appStateIsLoadedUpdate);
+
+// subscribe to pipe noitification when AppState#isLoaded is set to `true`
+appStateIsLoadedUpdate.subscribe((): void => {
+  console.log('App is loaded!');
+});
+
+// change state that WILL trigger an update
+appState.isLoaded = true;
+
+// change state that WILL NOT trigger an update
+appState.isLoaded = false;
+appState.isReady = true;
+
+import { NextFn } from '@benqus/top';
+
+type State = 'on' | 'off';
+interface HistoryEntry {
+  at: Date;
+  state: State;
+}
+
+// custom operator that generates and preserves the last 10 history entries when the state changes
+const historyPipe = pipe<[ State ], [ Array<HistoryEntry> ]>(
+  distinctReduce<State>((state: State) => state, 'off'),
+  (function () {
+    let history: Array<HistoryEntry> = [];
+
+    return (next: NextFn, state: State) => {
+      const at = new Date();
+      history.push({ at, state });
+      history = history.slice(-10);
+      next(history);
+    }
+  }()),
+);
+
+historyPipe.subscribe((history: Array<HistoryEntry>): void => {
+  console.log('history', history);
+})
+
+// push data through the pipe
+historyPipe('on');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('off');
+historyPipe('on');
+historyPipe('on');

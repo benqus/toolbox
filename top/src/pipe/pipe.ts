@@ -2,13 +2,15 @@ import { topic } from '../topic';
 import { AnyArgs } from '../common/types';
 import { Operator, Pipe, NextFn} from './types';
 
-export function pipe<I extends AnyArgs = AnyArgs, O extends AnyArgs = AnyArgs>(...operations: Array<Operator>): Pipe {
+export function pipe<I extends AnyArgs = AnyArgs, O extends AnyArgs = AnyArgs>(
+  ...operators: Array<Operator>
+): Pipe<I, O> {
   const _topic = topic<O>();
   let lastOperatorOutput: AnyArgs = [];
   let latestArgs;
 
   function executeOperation(i: number): void {
-    const fn = operations[i];
+    const fn = operators[i];
     if (fn) {
       const nextOperator: NextFn = (...args: AnyArgs): void => {
         lastOperatorOutput = (args.length === 0 ? lastOperatorOutput : args);

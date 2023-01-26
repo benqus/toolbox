@@ -129,6 +129,162 @@ obs.a = 7;
 
 Pipes are a pre-defined, ordered set of operations. Similar to RxJS's streams, however they are intentionally kept simple to avoid building overly complex pipelines that are hard to understand, maintain and debug.
 
-There are a few basic built-in operators to help you get going but it is entirely possible to implement fully custom operators - don't over-do it though...
+There are a few basic built-in operators to help you get going but it is possible to implement fully custom operators. Pipes are a great too to help you linearise your code and keep your operators testable.
 
-To do...
+Pipes can receive any number of input paramters and output any number of parameters as well.
+
+Simple TypeScript example:
+```ts
+import { pipe, Pipe, operators } from '@benqus/top';
+
+interface A {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+}
+
+type B = Pick<A, 'a'|'b'>;
+
+type Params = [ A ];
+type Outputs = [ B ];
+
+const { delay, pick } = operators;
+
+const pipeline: Pipe = pipe<Params, Outputs>(
+  delay(1000),
+  pick('a', 'b'),
+);
+pipeline.subscribe((b: B): void => {
+  console.timeLog('pipeline', 'pipeline output (B):', b);
+  console.timeEnd('pipeline');
+});
+
+console.time('pipeline');
+pipeline({
+  a: 'a',
+  b: 'b',
+  c: 'c',
+  d: 'd',
+});
+```
+
+Another way of using pipes is to build a signaling system based on the observables above:
+
+```ts
+interface AppState {
+  [key: string]: unknown;
+  isLoaded: boolean;
+  isReady: boolean;
+}
+
+const { reduce, distinctReduce, fanout, filter } = operators;
+
+// create an application state with (optionally nested) observables
+const appState = observable<AppState>({
+  isLoaded: false,
+  isReady: false,
+  // ...
+});
+
+// create a notification pipe
+const appStateIsLoadedUpdate = pipe(
+  fanout((appState: AppState): void => {
+    console.log('AppState is changing to', appState);
+  }),
+  distinctReduce(({ isLoaded }: AppState): boolean => isLoaded),
+  reduce(({ isLoaded }: AppState): boolean => isLoaded),
+  filter(Boolean),
+);
+
+// subscribe pipe to state changes
+appState.subscribe(appStateIsLoadedUpdate);
+
+// subscribe to pipe noitification when AppState#isLoaded is set to `true`
+appStateIsLoadedUpdate.subscribe((): void => {
+  console.log('App is loaded!');
+});
+
+// change state that WILL trigger an update
+appState.isLoaded = true;
+
+// these changes WILL NOT trigger any updates
+appState.isLoaded = false;
+appState.isReady = true;
+```
+
+You can also subscribe to a Topic or another Pipe as Topics, Observables and Pipes have the same subscription mechanism.
+
+### 3.1 Pipe Operators - Built-in, synchronous
+ - `buffer` - bundle every X updates into one publish
+ - `distinceReduce` - reduce inputs into one output that will be used to distinguish from previous updates
+ - `fanout` - hook into the pipe without any side effects
+ - `filter` - provided function should return a truthy value otherwise the pipe will stop the execution
+ - `pick` - construct a new object and copy values from properties listed in the arguments
+ - `reduce` - reduce inputs into one output
+ - `skip` - skip the first X input updates
+ - `take` - take the first X input updates but ignore anything after
+ - `times` - repeat operations X times (clone updates)
+
+### 3.2 Pipe Operators - Built-in, asynchronous
+ - `throttle` - publish every X ms if updates are coming through
+ - `debounce` -delay execution by X ms, any update with timeout will reset the timeout
+ - `delay` - simply delay (wait) further execution by X ms
+
+### 3.3 Pipe Operators - Custom
+
+```ts
+import { pipe, NextFn } from '@benqus/top';
+
+type State = 'on' | 'off';
+interface HistoryEntry {
+  at: Date;
+  state: State;
+}
+
+// custom operator that generates and preserves the last 10 history entries when the state changes
+const historyPipe = pipe<[ State ], [ Array<HistoryEntry> ]>(
+  distinctReduce<State>((state: State) => state, 'off'),
+  (function () {
+    let history: Array<HistoryEntry> = [];
+
+    return (next: NextFn, state: State) => {
+      const at = new Date();
+      history.push({ at, state });
+      history = history.slice(-10);
+      next(history);
+    }
+  }()),
+);
+
+historyPipe.subscribe((history: Array<HistoryEntry>): void => {
+  console.log('history', history);
+})
+
+// push data through the pipe
+historyPipe('on');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('on');
+historyPipe('off');
+historyPipe('off');
+historyPipe('on');
+historyPipe('on');
+```
+
+## Goal
+
+Build epic a/synchronous apps all over the stack, in a simplified way.
+
+## License
+
+MIT

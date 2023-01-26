@@ -52,6 +52,12 @@ describe('pipe', () => {
     expect(exec2).toHaveBeenCalledTimes(1);
     expect(exec2.mock.calls[0].slice(1)).toEqual([5]);
   });
+  
+  test('latest default', () => {
+    const p = pipe();
+    
+    expect(p.latest()).toEqual([]);
+  });
 
   test('latest', () => {
     const p = pipe();
