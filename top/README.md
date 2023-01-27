@@ -3,9 +3,9 @@
 
 Simple is best. Topics, Observables, Pipes. Simple af.
 
-This collection of JavaScript/TypeScript tools builds on built-in `object`s and `function`s.
+A collection of JavaScript/TypeScript tools builds on built-in `object`s and `function`s.
 No complex typings, endless conditions, massive/untraceable call-stacks, just minimal and specific purposes so your code can stay as explicit and self-explanatory as possible.
-Don't we all like it when a library does its black magic and we don't know why, huh?
+Don't we all like it when a library does its black magic and we don't know why...
 
 Best part is that because it's functions and objects, you can easily mock them for testing!
 
@@ -45,7 +45,7 @@ unsubscribe();
 
 > **Note**: Notice the topic argument listed as a generic Array of types!
 
-Topics are also customiseable with their publish logic:
+Topics are also customisable with their publish logic:
 ```ts
 import { Fn, Publisher } from '@benqus/top';
 
@@ -61,7 +61,7 @@ const customPublisher: Publisher<Args> = (publish: Fn<Args>, args: Args): void =
 const myTopic = topic<Args>(customPublisher);
 ```
 
-> **Important**: When creating a custom publisher, you will be responsible to invoking the `publish` function! Without that the topic won't notify its subscribers.
+> **Important**: When creating a custom publisher, you will be responsible for invoking the `publish` function! Without that the topic will not notify its subscribers.
 
 #### Custom/Async Topics
 
@@ -76,7 +76,7 @@ const debouncedTopic = asyncTopic.debounce(10);
 
 ## 2. Observable
 
-Observables are simple Proxied objects. They can have any value as their property, including topics, nested observables and pipes - in this case the root observable will automatically subscribe to the nested `ISubscribable`.
+Observables are simple Proxied objects. They can have any value as their property, including topics, nested observables and pipes - in this case the root observable will automatically subscribe to its child observables.
 
 Observables must have a specific initial schema or interface as they are sealed after creation.
 
@@ -98,13 +98,13 @@ const myObservable: Observable<MyObservable> = observable<MyObservable>({
 });
 
 // subscribe works the same way as for the topic
-const unobserve = myObservable.subscribe(console.log);
+const unsubscribe = myObservable.subscribe(console.log);
 
 // update observable via simple attribute assignments or `Object.assign`
 myObservable.value = 1;
 ```
 
-> **Note:** if you are using observables for state-management, it is recommended that you use a throttled topic - either the built-in solutions or your own custom one to bundle multiple updates into one update notification.
+> **Note:** if you are using observables for state-management, it is recommended that you use a throttled topic - either with the built-in solutions or your own custom one. This is done to bundle multiple updates into one update notification.
 
 Observables come with a built-in topic that handles the notifications but it is possible to re/use existing topics:
 
@@ -119,7 +119,7 @@ throttledTopic.subscribe(console.log);
 const obs = observable({ a: 5 }, throttledTopic);
 
 // publish into throttled topic
-throttledTopic({ a: 6});
+throttledTopic({ a: 6 });
 
 // publish via the observable into throttled topic
 obs.a = 7;
@@ -127,11 +127,11 @@ obs.a = 7;
 
 ## 3. Pipe
 
-Pipes are a pre-defined, ordered set of operations. Similar to RxJS's streams, however they are intentionally kept simple to avoid building overly complex pipelines that are hard to understand, maintain and debug.
+Pipes are a pre-defined, ordered set of operations. Although similar to RxJS's streams, they are intentionally kept simple to avoid building overly complex pipelines that are hard to understand, maintain and debug.
 
-There are a few basic built-in operators to help you get going but it is possible to implement fully custom operators. Pipes are a great too to help you linearise your code and keep your operators testable.
+There are a few basic built-in operators to help you get going but it is possible to implement your own. Pipes are a great tool to linearise your code and keep your operators testable.
 
-Pipes can receive any number of input paramters and output any number of parameters as well.
+Pipes can receive any number of input parameters and output any number as well.
 
 Simple TypeScript example:
 ```ts
@@ -228,7 +228,7 @@ You can also subscribe to a Topic or another Pipe as Topics, Observables and Pip
 
 ### 3.2 Pipe Operators - Built-in, asynchronous
  - `throttle` - publish every X ms if updates are coming through
- - `debounce` -delay execution by X ms, any update with timeout will reset the timeout
+ - `debounce` - delay execution by X ms, any update with timeout will reset the timeout
  - `delay` - simply delay (wait) further execution by X ms
 
 ### 3.3 Pipe Operators - Custom
